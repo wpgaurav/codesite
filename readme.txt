@@ -7,7 +7,7 @@ Tags: page builder, code editor, html, css, javascript, templates
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,7 @@ CodeSite gives developers a CodePen-like interface inside WordPress. Write HTML,
 3. Go to CodeSite > Dashboard to get started
 4. Create your first Block, then build Layouts and Templates
 
-**Note:** For the full code editor experience, download CodeMirror 5.x from https://codemirror.net/5/ and place the files in `assets/vendor/codemirror/`. See the README.md file in that directory for details.
+The plugin uses WordPress's built-in code editor for syntax highlighting.
 
 == Frequently Asked Questions ==
 
@@ -67,6 +67,13 @@ Use the {{field}} syntax in your HTML. For example:
 - {{menu:primary}} - Your primary navigation menu
 
 == Changelog ==
+
+= 1.1.0 =
+* Switched to WordPress built-in code editor
+* Complete light theme for admin interface
+* Improved Tangible Loops & Logic integration with one-click install
+* Fixed editor focus and typing issues
+* Simplified release workflow
 
 = 1.0.0 =
 * Initial release

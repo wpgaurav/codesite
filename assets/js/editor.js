@@ -1,7 +1,7 @@
 /**
  * CodeSite Editor JavaScript
  *
- * Handles the CodeMirror editors and live preview.
+ * Uses WordPress built-in code editor (CodeMirror).
  */
 
 (function($) {
@@ -21,85 +21,63 @@
     });
 
     /**
-     * Initialize CodeMirror editors
+     * Initialize code editors using WordPress built-in CodeMirror
      */
     function initEditors() {
-        // Check if CodeMirror is available
-        if (typeof CodeMirror === 'undefined') {
-            console.warn('CodeMirror not loaded, using plain textareas');
-            // Make textareas visible and functional
-            $('.codesite-pane-content textarea').css({
-                'display': 'block',
-                'width': '100%',
-                'height': '100%',
-                'border': 'none',
-                'padding': '12px',
-                'font-family': "'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace",
-                'font-size': '13px',
-                'line-height': '1.5',
-                'resize': 'none',
-                'background': '#fff',
-                'color': '#1f2937',
-                'box-sizing': 'border-box'
-            });
-
-            // Attach change handlers for preview
-            $('#codesite-html, #codesite-css, #codesite-js').on('input', debouncePreview);
-            return;
-        }
-
-        var editorConfig = {
-            lineNumbers: true,
-            autoCloseBrackets: true,
-            autoCloseTags: true,
-            matchBrackets: true,
-            indentUnit: 2,
-            tabSize: 2,
-            indentWithTabs: false,
-            lineWrapping: true,
-            theme: 'default'
-        };
+        var settings = codesiteAdmin.editorSettings;
 
         // HTML Editor
         var htmlTextarea = document.getElementById('codesite-html');
-        if (htmlTextarea) {
-            editors.html = CodeMirror.fromTextArea(htmlTextarea, $.extend({}, editorConfig, {
-                mode: 'htmlmixed'
-            }));
-            editors.html.on('change', debouncePreview);
+        if (htmlTextarea && settings.html) {
+            editors.html = wp.codeEditor.initialize(htmlTextarea, settings.html);
+            if (editors.html && editors.html.codemirror) {
+                editors.html.codemirror.on('change', debouncePreview);
+            }
         }
 
         // CSS Editor
         var cssTextarea = document.getElementById('codesite-css');
-        if (cssTextarea) {
-            editors.css = CodeMirror.fromTextArea(cssTextarea, $.extend({}, editorConfig, {
-                mode: 'css'
-            }));
-            editors.css.on('change', debouncePreview);
+        if (cssTextarea && settings.css) {
+            editors.css = wp.codeEditor.initialize(cssTextarea, settings.css);
+            if (editors.css && editors.css.codemirror) {
+                editors.css.codemirror.on('change', debouncePreview);
+            }
         }
 
         // JS Editor
         var jsTextarea = document.getElementById('codesite-js');
-        if (jsTextarea) {
-            editors.js = CodeMirror.fromTextArea(jsTextarea, $.extend({}, editorConfig, {
-                mode: 'javascript'
-            }));
-            editors.js.on('change', debouncePreview);
+        if (jsTextarea && settings.js) {
+            editors.js = wp.codeEditor.initialize(jsTextarea, settings.js);
+            if (editors.js && editors.js.codemirror) {
+                editors.js.codemirror.on('change', debouncePreview);
+            }
         }
 
-        // Refresh editors on window resize
-        $(window).on('resize', function() {
-            Object.values(editors).forEach(function(editor) {
-                editor.refresh();
-            });
-        });
+        // Fallback: If editors didn't initialize, make textareas work
+        if (!editors.html && htmlTextarea) {
+            $(htmlTextarea).on('input', debouncePreview);
+        }
+        if (!editors.css && cssTextarea) {
+            $(cssTextarea).on('input', debouncePreview);
+        }
+        if (!editors.js && jsTextarea) {
+            $(jsTextarea).on('input', debouncePreview);
+        }
 
-        // Initial refresh after a short delay
-        setTimeout(function() {
-            Object.values(editors).forEach(function(editor) {
-                editor.refresh();
-            });
-        }, 100);
+        // Refresh editors after layout settles
+        setTimeout(refreshEditors, 200);
+        $(window).on('resize', refreshEditors);
+    }
+
+    /**
+     * Refresh all CodeMirror editors
+     */
+    function refreshEditors() {
+        Object.keys(editors).forEach(function(key) {
+            if (editors[key] && editors[key].codemirror) {
+                editors[key].codemirror.refresh();
+            }
+        });
     }
 
     /**
@@ -114,16 +92,15 @@
      * Initialize preview
      */
     function initPreview() {
-        // Initial preview
         setTimeout(updatePreview, 500);
     }
 
     /**
-     * Get editor value (works with both CodeMirror and plain textareas)
+     * Get editor value
      */
     function getEditorValue(type) {
-        if (editors[type]) {
-            return editors[type].getValue();
+        if (editors[type] && editors[type].codemirror) {
+            return editors[type].codemirror.getValue();
         }
         var $textarea = $('#codesite-' + type);
         return $textarea.length ? $textarea.val() : '';
@@ -184,12 +161,7 @@
                 $(this).text('+');
             }
 
-            // Refresh editors
-            setTimeout(function() {
-                Object.values(editors).forEach(function(editor) {
-                    editor.refresh();
-                });
-            }, 100);
+            setTimeout(refreshEditors, 100);
         });
     }
 
@@ -216,19 +188,21 @@
             var field = $('#codesite-dynamic-field').val();
             if (!field) return;
 
-            if (editors.html) {
-                var doc = editors.html.getDoc();
+            if (editors.html && editors.html.codemirror) {
+                var cm = editors.html.codemirror;
+                var doc = cm.getDoc();
                 var cursor = doc.getCursor();
                 doc.replaceRange(field, cursor);
-                editors.html.focus();
+                cm.focus();
             } else {
-                // Fallback for plain textarea
                 var $textarea = $('#codesite-html');
-                var pos = $textarea[0].selectionStart;
-                var val = $textarea.val();
-                $textarea.val(val.substring(0, pos) + field + val.substring(pos));
-                $textarea[0].selectionStart = $textarea[0].selectionEnd = pos + field.length;
-                $textarea.focus();
+                if ($textarea.length) {
+                    var pos = $textarea[0].selectionStart || 0;
+                    var val = $textarea.val();
+                    $textarea.val(val.substring(0, pos) + field + val.substring(pos));
+                    $textarea[0].selectionStart = $textarea[0].selectionEnd = pos + field.length;
+                    $textarea.focus();
+                }
             }
         });
     }
@@ -259,7 +233,6 @@
                 success: function(response) {
                     $btn.prop('disabled', false).text(codesiteAdmin.strings.saved);
 
-                    // Update URL if new item
                     if (!id && response.id) {
                         var newUrl = codesiteAdmin.adminUrl + 'admin.php?page=codesite-' + type + '-editor&id=' + response.id;
                         window.history.replaceState({}, '', newUrl);
@@ -280,11 +253,11 @@
             });
         });
 
-        // Keyboard shortcut: Ctrl/Cmd + S
+        // Ctrl/Cmd + S to save
         $(document).on('keydown', function(e) {
             if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                 e.preventDefault();
-                $('#codesite-save').click();
+                $('#codesite-save').trigger('click');
             }
         });
     }
