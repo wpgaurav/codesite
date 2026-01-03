@@ -1,0 +1,577 @@
+/**
+ * CodeSite Admin Styles
+ */
+
+/* Variables */
+:root {
+    --codesite-primary: #2271b1;
+    --codesite-primary-hover: #135e96;
+    --codesite-dark: #1e1e1e;
+    --codesite-darker: #121212;
+    --codesite-border: #3c3c3c;
+    --codesite-text: #e0e0e0;
+    --codesite-text-muted: #888;
+    --codesite-success: #00a32a;
+    --codesite-warning: #dba617;
+    --codesite-error: #d63638;
+}
+
+/* Wrap */
+.codesite-wrap {
+    margin-right: 20px;
+}
+
+.codesite-wrap h1 {
+    margin-bottom: 20px;
+}
+
+/* Dashboard */
+.codesite-dashboard {
+    max-width: 1200px;
+}
+
+.codesite-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.codesite-stat-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 20px 30px;
+    text-align: center;
+    min-width: 150px;
+}
+
+.codesite-stat-card .stat-number {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--codesite-primary);
+    line-height: 1;
+}
+
+.codesite-stat-card .stat-label {
+    font-size: 14px;
+    color: #50575e;
+    margin: 10px 0;
+}
+
+.codesite-stat-card .stat-link {
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.codesite-section {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.codesite-section h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.codesite-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.codesite-status-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.codesite-status-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.codesite-status-list li:last-child {
+    border-bottom: none;
+}
+
+.codesite-status-list .status-ok {
+    color: var(--codesite-success);
+    margin-right: 8px;
+}
+
+.codesite-status-list .status-warning {
+    color: var(--codesite-warning);
+    margin-right: 8px;
+}
+
+.codesite-status-list .status-info {
+    color: var(--codesite-text-muted);
+    margin-right: 8px;
+}
+
+.codesite-steps {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.codesite-steps li {
+    margin-bottom: 15px;
+}
+
+.codesite-steps li p {
+    margin: 5px 0 0;
+    color: #646970;
+}
+
+/* Empty State */
+.codesite-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.codesite-empty-state h2 {
+    margin-bottom: 10px;
+}
+
+.codesite-empty-state p {
+    color: #646970;
+    margin-bottom: 20px;
+}
+
+/* Tables */
+.codesite-table .codesite-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.codesite-status-active {
+    background: #d1f5d3;
+    color: #00450c;
+}
+
+.codesite-status-draft {
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.codesite-status-trash {
+    background: #fcebea;
+    color: #8a1f1f;
+}
+
+/* Editor Wrap */
+.codesite-editor-wrap {
+    margin: 0;
+    position: fixed;
+    top: 32px; /* WP admin bar */
+    left: 160px; /* WP admin menu */
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--codesite-dark);
+}
+
+.folded .codesite-editor-wrap {
+    left: 36px;
+}
+
+@media screen and (max-width: 782px) {
+    .codesite-editor-wrap {
+        left: 0;
+        top: 46px;
+    }
+}
+
+/* Editor Header */
+.codesite-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--codesite-darker);
+    border-bottom: 1px solid var(--codesite-border);
+}
+
+.codesite-editor-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.codesite-back {
+    color: var(--codesite-text-muted);
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.codesite-back:hover {
+    color: var(--codesite-text);
+}
+
+.codesite-title-input {
+    background: transparent;
+    border: none;
+    color: var(--codesite-text);
+    font-size: 18px;
+    font-weight: 600;
+    padding: 5px 10px;
+    width: 300px;
+}
+
+.codesite-title-input:focus {
+    outline: none;
+    background: var(--codesite-dark);
+    border-radius: 3px;
+}
+
+.codesite-title-input::placeholder {
+    color: var(--codesite-text-muted);
+}
+
+.codesite-editor-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.codesite-editor-actions select {
+    background: var(--codesite-dark);
+    border: 1px solid var(--codesite-border);
+    color: var(--codesite-text);
+    padding: 6px 10px;
+    border-radius: 3px;
+}
+
+/* Editor Body */
+.codesite-editor-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.codesite-editor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Editor Panes */
+.codesite-editor-panes {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.codesite-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--codesite-border);
+    min-width: 0;
+}
+
+.codesite-pane:last-child {
+    border-right: none;
+}
+
+.codesite-pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--codesite-darker);
+    border-bottom: 1px solid var(--codesite-border);
+}
+
+.codesite-pane-header .pane-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--codesite-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.codesite-pane-toggle {
+    background: none;
+    border: none;
+    color: var(--codesite-text-muted);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+}
+
+.codesite-pane-toggle:hover {
+    color: var(--codesite-text);
+}
+
+.codesite-pane-content {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.codesite-pane-content textarea {
+    display: none;
+}
+
+.codesite-pane-content .CodeMirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100% !important;
+}
+
+/* Preview Pane */
+.codesite-preview-pane {
+    min-width: 300px;
+}
+
+.codesite-preview-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.codesite-preview-size {
+    background: none;
+    border: none;
+    color: var(--codesite-text-muted);
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.codesite-preview-size:hover,
+.codesite-preview-size.active {
+    background: var(--codesite-dark);
+    color: var(--codesite-text);
+}
+
+.codesite-preview-size .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+#codesite-preview-frame {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border: none;
+    transition: width 0.3s ease;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Editor Sidebar */
+.codesite-editor-sidebar {
+    width: 280px;
+    background: var(--codesite-darker);
+    border-left: 1px solid var(--codesite-border);
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.codesite-sidebar-section {
+    padding: 15px;
+    border-bottom: 1px solid var(--codesite-border);
+}
+
+.codesite-sidebar-section h3 {
+    margin: 0 0 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--codesite-text);
+}
+
+.codesite-sidebar-section h4 {
+    margin: 15px 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--codesite-text-muted);
+}
+
+.codesite-sidebar-section label {
+    display: block;
+    font-size: 12px;
+    color: var(--codesite-text-muted);
+    margin-bottom: 5px;
+}
+
+.codesite-sidebar-section input[type="text"],
+.codesite-sidebar-section input[type="number"],
+.codesite-sidebar-section select {
+    background: var(--codesite-dark);
+    border: 1px solid var(--codesite-border);
+    color: var(--codesite-text);
+    padding: 8px 10px;
+    border-radius: 3px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.codesite-sidebar-section input:focus,
+.codesite-sidebar-section select:focus {
+    border-color: var(--codesite-primary);
+    outline: none;
+}
+
+.codesite-sidebar-section p {
+    margin: 0 0 15px;
+}
+
+.codesite-sidebar-section .description {
+    font-size: 11px;
+    color: var(--codesite-text-muted);
+    margin-top: 5px;
+}
+
+/* Radio Labels */
+.codesite-radio-label {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: var(--codesite-text) !important;
+}
+
+.codesite-radio-label input[type="radio"] {
+    margin: 0;
+}
+
+/* Field Picker */
+.codesite-field-picker {
+    display: flex;
+    gap: 5px;
+}
+
+.codesite-field-picker select {
+    flex: 1;
+}
+
+.codesite-field-picker .button {
+    flex-shrink: 0;
+}
+
+/* Sortable List */
+.codesite-sortable-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-height: 50px;
+    background: var(--codesite-dark);
+    border-radius: 3px;
+}
+
+.codesite-sortable-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: var(--codesite-darker);
+    border: 1px solid var(--codesite-border);
+    margin-bottom: 5px;
+    border-radius: 3px;
+    color: var(--codesite-text);
+    font-size: 13px;
+    cursor: move;
+}
+
+.codesite-sortable-list li .dashicons {
+    color: var(--codesite-text-muted);
+    cursor: grab;
+}
+
+.codesite-sortable-list li .codesite-remove-block {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--codesite-text-muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    line-height: 1;
+}
+
+.codesite-sortable-list li .codesite-remove-block:hover {
+    color: var(--codesite-error);
+}
+
+/* Layout Editor */
+.codesite-layout-editor-body {
+    flex-direction: row-reverse;
+}
+
+.codesite-layout-editor-body .codesite-editor-sidebar {
+    border-left: none;
+    border-right: 1px solid var(--codesite-border);
+}
+
+/* Settings Form */
+.codesite-settings-form .form-table th {
+    width: 200px;
+    padding-top: 25px;
+}
+
+.codesite-settings-form .form-table td fieldset label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.codesite-settings-form #codesite-settings-status {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+/* Buttons in dark mode */
+.codesite-editor-wrap .button {
+    background: var(--codesite-dark);
+    border: 1px solid var(--codesite-border);
+    color: var(--codesite-text);
+}
+
+.codesite-editor-wrap .button:hover {
+    background: var(--codesite-border);
+    border-color: var(--codesite-text-muted);
+    color: var(--codesite-text);
+}
+
+.codesite-editor-wrap .button-primary {
+    background: var(--codesite-primary);
+    border-color: var(--codesite-primary);
+    color: #fff;
+}
+
+.codesite-editor-wrap .button-primary:hover {
+    background: var(--codesite-primary-hover);
+    border-color: var(--codesite-primary-hover);
+}
+
+/* Responsive */
+@media screen and (max-width: 1200px) {
+    .codesite-stats {
+        flex-wrap: wrap;
+    }
+
+    .codesite-editor-panes {
+        flex-wrap: wrap;
+    }
+
+    .codesite-pane {
+        min-width: 50%;
+        flex: 1 1 50%;
+    }
+}

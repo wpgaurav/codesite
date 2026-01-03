@@ -1,0 +1,141 @@
+/**
+ * CodeSite Frontend Base Styles
+ *
+ * Minimal reset and base styles for CodeSite-rendered pages.
+ * This file is optional and can be disabled in settings.
+ */
+
+/* Box Sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove default margin/padding */
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Body defaults */
+body.codesite-body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Links */
+a {
+    color: inherit;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    line-height: 1.3;
+}
+
+/* Paragraphs */
+p {
+    margin-top: 0;
+}
+
+/* Lists */
+ul, ol {
+    padding-left: 1.5em;
+}
+
+/* Code */
+code, pre {
+    font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+pre {
+    overflow-x: auto;
+    padding: 1em;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 0.5em;
+}
+
+/* Forms */
+input,
+textarea,
+select,
+button {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Layout containers */
+.codesite-layout,
+.codesite-content {
+    width: 100%;
+}
+
+/* Block containers */
+.codesite-block {
+    width: 100%;
+}
+
+/* Navigation menus - basic styling */
+.menu,
+.nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li,
+.nav-menu li {
+    display: inline-block;
+}
+
+.menu a,
+.nav-menu a {
+    text-decoration: none;
+}
+
+/* Utility: Screen Reader Text */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+/* Utility: Clearfix */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
