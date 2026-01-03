@@ -1,5 +1,8 @@
 === CodeSite ===
-Contributors: codesite
+Contributors: gauravtiwari
+Author: Gaurav Tiwari
+Author URI: https://gauravtiwari.org
+Plugin URI: https://gauravtiwari.org/wordpress-plugins/codesite/
 Tags: page builder, code editor, html, css, javascript, templates
 Requires at least: 6.0
 Tested up to: 6.7
