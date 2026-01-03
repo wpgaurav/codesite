@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: CodeSite
- * Plugin URI: https://example.com/codesite
+ * Plugin URI: https://gauravtiwari.org/wordpress-plugins/codesite/
  * Description: Build WordPress sites with pure HTML, CSS, and JS. No page builder bloat.
  * Version: 1.0.0
- * Author: CodeSite
- * Author URI: https://example.com
+ * Author: Gaurav Tiwari
+ * Author URI: https://gauravtiwari.org
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: codesite
