@@ -240,7 +240,86 @@ class CodeSite_Renderer {
             return self::render_template( $template );
         }
 
-        return '';
+        // Render using default layouts (when theme override is enabled but no template).
+        return self::render_with_defaults();
+    }
+
+    /**
+     * Render page using default layouts.
+     *
+     * @return string
+     */
+    public static function render_with_defaults() {
+        $html    = '';
+        $context = array();
+
+        // Set up post context if on a singular page.
+        if ( is_singular() ) {
+            $context['post_id'] = get_the_ID();
+        }
+
+        // Render default header.
+        $default_header = CodeSite_Database::get_setting( 'default_header', null );
+        if ( $default_header ) {
+            $html .= self::render_layout( $default_header, $context );
+        }
+
+        // Render main content.
+        $default_main = CodeSite_Database::get_setting( 'default_main_layout', null );
+        if ( $default_main ) {
+            $html .= '<main class="codesite-content codesite-default">';
+            $html .= self::render_layout( $default_main, $context );
+            $html .= '</main>';
+        } else {
+            // Render default post content.
+            $html .= '<main class="codesite-content codesite-default">';
+            $html .= self::render_default_content( $context );
+            $html .= '</main>';
+        }
+
+        // Render default footer.
+        $default_footer = CodeSite_Database::get_setting( 'default_footer', null );
+        if ( $default_footer ) {
+            $html .= self::render_layout( $default_footer, $context );
+        }
+
+        return $html;
+    }
+
+    /**
+     * Render default post content.
+     *
+     * @param array $context Context data.
+     *
+     * @return string
+     */
+    private static function render_default_content( $context ) {
+        $html = '';
+
+        if ( have_posts() ) {
+            while ( have_posts() ) {
+                the_post();
+
+                $html .= '<article class="codesite-post">';
+
+                // Title.
+                $html .= '<h1 class="codesite-post-title">' . get_the_title() . '</h1>';
+
+                // Content.
+                ob_start();
+                the_content();
+                $html .= '<div class="codesite-post-content">' . ob_get_clean() . '</div>';
+
+                $html .= '</article>';
+            }
+        } elseif ( is_404() ) {
+            $html .= '<div class="codesite-404">';
+            $html .= '<h1>' . esc_html__( 'Page Not Found', 'codesite' ) . '</h1>';
+            $html .= '<p>' . esc_html__( 'The page you are looking for could not be found.', 'codesite' ) . '</p>';
+            $html .= '</div>';
+        }
+
+        return $html;
     }
 
     /**

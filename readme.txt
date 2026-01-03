@@ -7,7 +7,7 @@ Tags: page builder, code editor, html, css, javascript, templates
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,11 @@ Use the {{field}} syntax in your HTML. For example:
 - {{menu:primary}} - Your primary navigation menu
 
 == Changelog ==
+
+= 1.1.1 =
+* Added CSS snippets dropdown with Flexbox, Grid, Layout, Typography, Effects, and Responsive shortcuts
+* Added class suggestions from HTML panel for quick CSS selector creation
+* Improved Global CSS/JS editor
 
 = 1.1.0 =
 * Switched to WordPress built-in code editor

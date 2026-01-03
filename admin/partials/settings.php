@@ -20,9 +20,13 @@ $default_footer     = isset( $settings['default_footer'] ) ? $settings['default_
 $tangible_support   = isset( $settings['tangible_support'] ) ? $settings['tangible_support'] : true;
 $acf_support        = isset( $settings['acf_support'] ) ? $settings['acf_support'] : true;
 
-$all_layouts = CodeSite_Layouts::get_all();
-$headers     = array_filter( $all_layouts, function( $l ) { return $l->type === 'header'; } );
-$footers     = array_filter( $all_layouts, function( $l ) { return $l->type === 'footer'; } );
+// Get all layouts regardless of status for debugging - but prefer active ones.
+$all_layouts = CodeSite_Layouts::get_all( array( 'status' => null ) );
+$headers     = array_filter( $all_layouts, function( $l ) { return $l->type === 'header' && $l->status === 'active'; } );
+$footers     = array_filter( $all_layouts, function( $l ) { return $l->type === 'footer' && $l->status === 'active'; } );
+$sections    = array_filter( $all_layouts, function( $l ) { return $l->type === 'section' && $l->status === 'active'; } );
+
+$default_main_layout = isset( $settings['default_main_layout'] ) ? $settings['default_main_layout'] : null;
 ?>
 
 <div class="wrap codesite-wrap">
@@ -107,6 +111,18 @@ $footers     = array_filter( $all_layouts, function( $l ) { return $l->type === 
                             </select>
                         </p>
                         <p>
+                            <label for="default_main_layout"><?php esc_html_e( 'Default Main Layout', 'codesite' ); ?></label>
+                            <select name="default_main_layout" id="default_main_layout">
+                                <option value=""><?php esc_html_e( 'None (show post content)', 'codesite' ); ?></option>
+                                <?php foreach ( $sections as $section ) : ?>
+                                    <option value="<?php echo esc_attr( $section->id ); ?>" <?php selected( $default_main_layout, $section->id ); ?>>
+                                        <?php echo esc_html( $section->name ); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span class="description"><?php esc_html_e( 'Used when no template is set for the current page.', 'codesite' ); ?></span>
+                        </p>
+                        <p>
                             <label for="default_footer"><?php esc_html_e( 'Default Footer Layout', 'codesite' ); ?></label>
                             <select name="default_footer" id="default_footer">
                                 <option value=""><?php esc_html_e( 'None', 'codesite' ); ?></option>
@@ -175,6 +191,7 @@ jQuery(document).ready(function($) {
 
         // Handle select values
         if (formData.default_header === '') formData.default_header = null;
+        if (formData.default_main_layout === '') formData.default_main_layout = null;
         if (formData.default_footer === '') formData.default_footer = null;
 
         $.ajax({
