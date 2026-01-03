@@ -1,5 +1,5 @@
 === CodeSite ===
-Contributors: developer starter
+Contributors: gauravtiwari
 Author: Gaurav Tiwari
 Author URI: https://gauravtiwari.org
 Plugin URI: https://gauravtiwari.org/wordpress-plugins/codesite/
