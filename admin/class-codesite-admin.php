@@ -127,14 +127,6 @@ class CodeSite_Admin {
             array(),
             CODESITE_VERSION
         );
-
-        // CodeMirror from CDN.
-        wp_enqueue_style(
-            'codemirror',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css',
-            array(),
-            '5.65.16'
-        );
     }
 
     /**
@@ -147,78 +139,51 @@ class CodeSite_Admin {
             return;
         }
 
-        // CodeMirror from CDN.
-        wp_enqueue_script(
-            'codemirror',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js',
-            array(),
-            '5.65.16',
-            true
+        // Use WordPress built-in code editor (no autocomplete).
+        $editor_settings = array(
+            'codemirror' => array(
+                'lineNumbers'       => true,
+                'lineWrapping'      => true,
+                'indentUnit'        => 2,
+                'tabSize'           => 2,
+                'indentWithTabs'    => false,
+                'autoCloseBrackets' => false,
+                'autoCloseTags'     => false,
+                'matchBrackets'     => false,
+                'lint'              => false,
+                'gutters'           => array(),
+            ),
         );
 
-        // CodeMirror modes from CDN.
-        wp_enqueue_script(
-            'codemirror-xml',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js',
-            array( 'codemirror' ),
-            '5.65.16',
-            true
+        // Enqueue WordPress code editor for HTML.
+        $html_settings = wp_enqueue_code_editor(
+            array_merge(
+                $editor_settings,
+                array( 'type' => 'text/html' )
+            )
         );
 
-        wp_enqueue_script(
-            'codemirror-css',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js',
-            array( 'codemirror' ),
-            '5.65.16',
-            true
+        // Enqueue WordPress code editor for CSS.
+        $css_settings = wp_enqueue_code_editor(
+            array_merge(
+                $editor_settings,
+                array( 'type' => 'text/css' )
+            )
         );
 
-        wp_enqueue_script(
-            'codemirror-javascript',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js',
-            array( 'codemirror' ),
-            '5.65.16',
-            true
-        );
-
-        wp_enqueue_script(
-            'codemirror-html',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js',
-            array( 'codemirror', 'codemirror-xml', 'codemirror-css', 'codemirror-javascript' ),
-            '5.65.16',
-            true
-        );
-
-        // CodeMirror addons from CDN.
-        wp_enqueue_script(
-            'codemirror-closetag',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js',
-            array( 'codemirror' ),
-            '5.65.16',
-            true
-        );
-
-        wp_enqueue_script(
-            'codemirror-closebrackets',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js',
-            array( 'codemirror' ),
-            '5.65.16',
-            true
-        );
-
-        wp_enqueue_script(
-            'codemirror-matchbrackets',
-            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js',
-            array( 'codemirror' ),
-            '5.65.16',
-            true
+        // Enqueue WordPress code editor for JS.
+        $js_settings = wp_enqueue_code_editor(
+            array_merge(
+                $editor_settings,
+                array( 'type' => 'text/javascript' )
+            )
         );
 
         // Admin scripts.
         wp_enqueue_script(
             'codesite-admin',
             CODESITE_URL . 'assets/js/admin.js',
-            array( 'jquery', 'codemirror', 'codemirror-html', 'codemirror-css', 'codemirror-javascript' ),
+            array( 'jquery' ),
             CODESITE_VERSION,
             true
         );
@@ -227,23 +192,28 @@ class CodeSite_Admin {
         wp_enqueue_script(
             'codesite-editor',
             CODESITE_URL . 'assets/js/editor.js',
-            array( 'jquery', 'codemirror', 'codemirror-html', 'codemirror-css', 'codemirror-javascript' ),
+            array( 'jquery', 'wp-codemirror' ),
             CODESITE_VERSION,
             true
         );
 
-        // Localize script.
+        // Localize script with editor settings.
         wp_localize_script(
             'codesite-admin',
             'codesiteAdmin',
             array(
-                'apiUrl'   => rest_url( 'codesite/v1' ),
-                'nonce'    => wp_create_nonce( 'wp_rest' ),
-                'adminUrl' => admin_url(),
-                'strings'  => array(
-                    'saving'      => __( 'Saving...', 'codesite' ),
-                    'saved'       => __( 'Saved!', 'codesite' ),
-                    'error'       => __( 'Error saving.', 'codesite' ),
+                'apiUrl'         => rest_url( 'codesite/v1' ),
+                'nonce'          => wp_create_nonce( 'wp_rest' ),
+                'adminUrl'       => admin_url(),
+                'editorSettings' => array(
+                    'html' => $html_settings ? $html_settings : false,
+                    'css'  => $css_settings ? $css_settings : false,
+                    'js'   => $js_settings ? $js_settings : false,
+                ),
+                'strings'        => array(
+                    'saving'        => __( 'Saving...', 'codesite' ),
+                    'saved'         => __( 'Saved!', 'codesite' ),
+                    'error'         => __( 'Error saving.', 'codesite' ),
                     'confirmDelete' => __( 'Are you sure you want to delete this?', 'codesite' ),
                 ),
             )
