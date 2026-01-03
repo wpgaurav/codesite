@@ -47,7 +47,29 @@ if ( ! in_array( 'general', $categories, true ) ) {
 
     <div class="codesite-editor-body">
         <div class="codesite-editor-main">
-            <div class="codesite-editor-panes">
+            <!-- Preview Area -->
+            <div class="codesite-preview-area">
+                <div class="codesite-pane-header">
+                    <span class="pane-title"><?php esc_html_e( 'Preview', 'codesite' ); ?></span>
+                    <div class="codesite-preview-controls">
+                        <button type="button" class="codesite-preview-size active" data-width="100%">
+                            <span class="dashicons dashicons-desktop"></span>
+                        </button>
+                        <button type="button" class="codesite-preview-size" data-width="768px">
+                            <span class="dashicons dashicons-tablet"></span>
+                        </button>
+                        <button type="button" class="codesite-preview-size" data-width="375px">
+                            <span class="dashicons dashicons-smartphone"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="codesite-preview-content">
+                    <iframe id="codesite-preview-frame" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <!-- Code Editors -->
+            <div class="codesite-code-editors">
                 <div class="codesite-pane" data-pane="html">
                     <div class="codesite-pane-header">
                         <span class="pane-title">HTML</span>
@@ -75,26 +97,6 @@ if ( ! in_array( 'general', $categories, true ) ) {
                     </div>
                     <div class="codesite-pane-content">
                         <textarea id="codesite-js"><?php echo esc_textarea( $js ); ?></textarea>
-                    </div>
-                </div>
-
-                <div class="codesite-pane codesite-preview-pane" data-pane="preview">
-                    <div class="codesite-pane-header">
-                        <span class="pane-title"><?php esc_html_e( 'Preview', 'codesite' ); ?></span>
-                        <div class="codesite-preview-controls">
-                            <button type="button" class="codesite-preview-size active" data-width="100%">
-                                <span class="dashicons dashicons-desktop"></span>
-                            </button>
-                            <button type="button" class="codesite-preview-size" data-width="768px">
-                                <span class="dashicons dashicons-tablet"></span>
-                            </button>
-                            <button type="button" class="codesite-preview-size" data-width="375px">
-                                <span class="dashicons dashicons-smartphone"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="codesite-pane-content">
-                        <iframe id="codesite-preview-frame" src="about:blank"></iframe>
                     </div>
                 </div>
             </div>

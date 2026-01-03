@@ -13,12 +13,12 @@ $layout    = $layout_id ? CodeSite_Layouts::get( $layout_id ) : null;
 
 $name        = $layout ? $layout->name : '';
 $slug        = $layout ? $layout->slug : '';
-$type        = $layout ? $layout->type : 'section';
+$type        = $layout ? $layout->type : 'header';
 $block_order = $layout ? json_decode( $layout->block_order, true ) : array();
 $custom_html = $layout ? $layout->custom_html : '';
 $custom_css  = $layout ? $layout->custom_css : '';
 $custom_js   = $layout ? $layout->custom_js : '';
-$use_blocks  = $layout ? (bool) $layout->use_blocks : true;
+$use_blocks  = $layout ? (bool) $layout->use_blocks : false;
 $status      = $layout ? $layout->status : 'active';
 
 $all_blocks = CodeSite_Blocks::get_all();
@@ -54,8 +54,64 @@ if ( ! empty( $block_order ) ) {
         </div>
     </div>
 
-    <div class="codesite-editor-body codesite-layout-editor-body">
-        <div class="codesite-editor-sidebar" style="width: 300px;">
+    <div class="codesite-editor-body">
+        <div class="codesite-editor-main">
+            <!-- Preview Area -->
+            <div class="codesite-preview-area">
+                <div class="codesite-pane-header">
+                    <span class="pane-title"><?php esc_html_e( 'Preview', 'codesite' ); ?></span>
+                    <div class="codesite-preview-controls">
+                        <button type="button" class="codesite-preview-size active" data-width="100%">
+                            <span class="dashicons dashicons-desktop"></span>
+                        </button>
+                        <button type="button" class="codesite-preview-size" data-width="768px">
+                            <span class="dashicons dashicons-tablet"></span>
+                        </button>
+                        <button type="button" class="codesite-preview-size" data-width="375px">
+                            <span class="dashicons dashicons-smartphone"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="codesite-preview-content">
+                    <iframe id="codesite-preview-frame" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <!-- Code Editors -->
+            <div class="codesite-code-editors">
+                <div class="codesite-pane" data-pane="html">
+                    <div class="codesite-pane-header">
+                        <span class="pane-title">HTML</span>
+                        <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
+                    </div>
+                    <div class="codesite-pane-content">
+                        <textarea id="codesite-html"><?php echo esc_textarea( $custom_html ); ?></textarea>
+                    </div>
+                </div>
+
+                <div class="codesite-pane" data-pane="css">
+                    <div class="codesite-pane-header">
+                        <span class="pane-title">CSS</span>
+                        <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
+                    </div>
+                    <div class="codesite-pane-content">
+                        <textarea id="codesite-css"><?php echo esc_textarea( $custom_css ); ?></textarea>
+                    </div>
+                </div>
+
+                <div class="codesite-pane" data-pane="js">
+                    <div class="codesite-pane-header">
+                        <span class="pane-title">JS</span>
+                        <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
+                    </div>
+                    <div class="codesite-pane-content">
+                        <textarea id="codesite-js"><?php echo esc_textarea( $custom_js ); ?></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="codesite-editor-sidebar">
             <div class="codesite-sidebar-section">
                 <h3><?php esc_html_e( 'Settings', 'codesite' ); ?></h3>
 
@@ -72,22 +128,12 @@ if ( ! empty( $block_order ) ) {
                         <option value="section" <?php selected( $type, 'section' ); ?>><?php esc_html_e( 'Section', 'codesite' ); ?></option>
                     </select>
                 </p>
-
-                <p>
-                    <label><?php esc_html_e( 'Content Mode', 'codesite' ); ?></label>
-                    <label class="codesite-radio-label">
-                        <input type="radio" name="codesite-layout-mode" value="blocks" <?php checked( $use_blocks ); ?>>
-                        <?php esc_html_e( 'Use Blocks', 'codesite' ); ?>
-                    </label>
-                    <label class="codesite-radio-label">
-                        <input type="radio" name="codesite-layout-mode" value="custom" <?php checked( ! $use_blocks ); ?>>
-                        <?php esc_html_e( 'Custom HTML', 'codesite' ); ?>
-                    </label>
-                </p>
             </div>
 
-            <div class="codesite-sidebar-section codesite-blocks-mode" <?php echo ! $use_blocks ? 'style="display:none;"' : ''; ?>>
-                <h3><?php esc_html_e( 'Blocks in Layout', 'codesite' ); ?></h3>
+            <div class="codesite-sidebar-section">
+                <h3><?php esc_html_e( 'Include Blocks', 'codesite' ); ?></h3>
+                <p class="description"><?php esc_html_e( 'Optionally include existing blocks in this layout.', 'codesite' ); ?></p>
+
                 <ul id="codesite-layout-blocks" class="codesite-sortable-list">
                     <?php foreach ( $layout_blocks as $block ) : ?>
                         <li data-id="<?php echo esc_attr( $block->id ); ?>">
@@ -98,7 +144,6 @@ if ( ! empty( $block_order ) ) {
                     <?php endforeach; ?>
                 </ul>
 
-                <h4><?php esc_html_e( 'Available Blocks', 'codesite' ); ?></h4>
                 <select id="codesite-available-blocks" class="widefat">
                     <option value=""><?php esc_html_e( 'Select a block...', 'codesite' ); ?></option>
                     <?php foreach ( $all_blocks as $block ) : ?>
@@ -109,47 +154,29 @@ if ( ! empty( $block_order ) ) {
                     <?php esc_html_e( '+ Add Block', 'codesite' ); ?>
                 </button>
             </div>
-        </div>
 
-        <div class="codesite-editor-main codesite-custom-mode" <?php echo $use_blocks ? 'style="display:none;"' : ''; ?>>
-            <div class="codesite-editor-panes">
-                <div class="codesite-pane" data-pane="html">
-                    <div class="codesite-pane-header">
-                        <span class="pane-title">HTML</span>
-                    </div>
-                    <div class="codesite-pane-content">
-                        <textarea id="codesite-html"><?php echo esc_textarea( $custom_html ); ?></textarea>
-                    </div>
-                </div>
-
-                <div class="codesite-pane" data-pane="css">
-                    <div class="codesite-pane-header">
-                        <span class="pane-title">CSS</span>
-                    </div>
-                    <div class="codesite-pane-content">
-                        <textarea id="codesite-css"><?php echo esc_textarea( $custom_css ); ?></textarea>
-                    </div>
-                </div>
-
-                <div class="codesite-pane" data-pane="js">
-                    <div class="codesite-pane-header">
-                        <span class="pane-title">JS</span>
-                    </div>
-                    <div class="codesite-pane-content">
-                        <textarea id="codesite-js"><?php echo esc_textarea( $custom_js ); ?></textarea>
-                    </div>
+            <div class="codesite-sidebar-section">
+                <h3><?php esc_html_e( 'Dynamic Fields', 'codesite' ); ?></h3>
+                <div class="codesite-field-picker">
+                    <select id="codesite-dynamic-field" class="widefat">
+                        <option value=""><?php esc_html_e( 'Select a field...', 'codesite' ); ?></option>
+                        <optgroup label="<?php esc_attr_e( 'Site', 'codesite' ); ?>">
+                            <option value="{{site_name}}">site_name</option>
+                            <option value="{{site_description}}">site_description</option>
+                            <option value="{{site_url}}">site_url</option>
+                            <option value="{{site_logo}}">site_logo</option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Navigation', 'codesite' ); ?>">
+                            <option value="{{menu:primary}}">menu:primary</option>
+                            <option value="{{menu:footer}}">menu:footer</option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Other', 'codesite' ); ?>">
+                            <option value="{{current_year}}">current_year</option>
+                        </optgroup>
+                    </select>
+                    <button type="button" id="codesite-insert-field" class="button"><?php esc_html_e( 'Insert', 'codesite' ); ?></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-jQuery(document).ready(function($) {
-    $('input[name="codesite-layout-mode"]').on('change', function() {
-        var useBlocks = $(this).val() === 'blocks';
-        $('.codesite-blocks-mode').toggle(useBlocks);
-        $('.codesite-custom-mode').toggle(!useBlocks);
-    });
-});
-</script>

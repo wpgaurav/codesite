@@ -140,10 +140,33 @@ $footers = array_filter( $all_layouts, function( $l ) { return $l->type === 'foo
         </div>
 
         <div class="codesite-editor-main">
-            <div class="codesite-editor-panes">
+            <!-- Preview Area -->
+            <div class="codesite-preview-area">
+                <div class="codesite-pane-header">
+                    <span class="pane-title"><?php esc_html_e( 'Preview', 'codesite' ); ?></span>
+                    <div class="codesite-preview-controls">
+                        <button type="button" class="codesite-preview-size active" data-width="100%">
+                            <span class="dashicons dashicons-desktop"></span>
+                        </button>
+                        <button type="button" class="codesite-preview-size" data-width="768px">
+                            <span class="dashicons dashicons-tablet"></span>
+                        </button>
+                        <button type="button" class="codesite-preview-size" data-width="375px">
+                            <span class="dashicons dashicons-smartphone"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="codesite-preview-content">
+                    <iframe id="codesite-preview-frame" src="about:blank"></iframe>
+                </div>
+            </div>
+
+            <!-- Code Editors -->
+            <div class="codesite-code-editors">
                 <div class="codesite-pane" data-pane="html">
                     <div class="codesite-pane-header">
                         <span class="pane-title"><?php esc_html_e( 'Custom HTML', 'codesite' ); ?></span>
+                        <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
                     </div>
                     <div class="codesite-pane-content">
                         <textarea id="codesite-html"><?php echo esc_textarea( $custom_html ); ?></textarea>
@@ -153,6 +176,7 @@ $footers = array_filter( $all_layouts, function( $l ) { return $l->type === 'foo
                 <div class="codesite-pane" data-pane="css">
                     <div class="codesite-pane-header">
                         <span class="pane-title">CSS</span>
+                        <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
                     </div>
                     <div class="codesite-pane-content">
                         <textarea id="codesite-css"><?php echo esc_textarea( $custom_css ); ?></textarea>
@@ -162,6 +186,7 @@ $footers = array_filter( $all_layouts, function( $l ) { return $l->type === 'foo
                 <div class="codesite-pane" data-pane="js">
                     <div class="codesite-pane-header">
                         <span class="pane-title">JS</span>
+                        <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
                     </div>
                     <div class="codesite-pane-content">
                         <textarea id="codesite-js"><?php echo esc_textarea( $custom_js ); ?></textarea>
