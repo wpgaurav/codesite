@@ -47,7 +47,37 @@
         'media-tablet': '@media (max-width: 768px) {\n  /* Tablet styles */\n  \n}',
         'media-mobile': '@media (max-width: 480px) {\n  /* Mobile styles */\n  \n}',
         'hide-mobile': '.hide-mobile {\n  display: block;\n}\n@media (max-width: 768px) {\n  .hide-mobile {\n    display: none;\n  }\n}',
-        'show-mobile': '.show-mobile {\n  display: none;\n}\n@media (max-width: 768px) {\n  .show-mobile {\n    display: block;\n  }\n}'
+        'show-mobile': '.show-mobile {\n  display: none;\n}\n@media (max-width: 768px) {\n  .show-mobile {\n    display: block;\n  }\n}',
+
+        // Buttons
+        'btn': '.btn {\n  display: inline-block;\n  padding: 0.75rem 1.5rem;\n  font-size: 1rem;\n  font-weight: 500;\n  text-align: center;\n  text-decoration: none;\n  border: none;\n  border-radius: 0.375rem;\n  cursor: pointer;\n  transition: all 0.2s ease;\n}\n.btn-primary {\n  background: #2563eb;\n  color: #fff;\n}\n.btn-primary:hover {\n  background: #1d4ed8;\n}\n.btn-secondary {\n  background: #6b7280;\n  color: #fff;\n}\n.btn-secondary:hover {\n  background: #4b5563;\n}\n.btn-outline {\n  background: transparent;\n  border: 2px solid currentColor;\n}\n.btn-outline:hover {\n  background: rgba(0,0,0,0.05);\n}',
+
+        // Cards
+        'card': '.card {\n  background: #fff;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 3px rgba(0,0,0,0.1);\n  overflow: hidden;\n}\n.card-img {\n  width: 100%;\n  height: 200px;\n  object-fit: cover;\n}\n.card-body {\n  padding: 1.5rem;\n}\n.card-title {\n  margin: 0 0 0.5rem;\n  font-size: 1.25rem;\n  font-weight: 600;\n}\n.card-text {\n  margin: 0;\n  color: #6b7280;\n}',
+
+        // Forms
+        'form': '.form-group {\n  margin-bottom: 1rem;\n}\n.form-label {\n  display: block;\n  margin-bottom: 0.5rem;\n  font-weight: 500;\n}\n.form-input {\n  width: 100%;\n  padding: 0.75rem 1rem;\n  font-size: 1rem;\n  border: 1px solid #d1d5db;\n  border-radius: 0.375rem;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n.form-input:focus {\n  outline: none;\n  border-color: #2563eb;\n  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);\n}\n.form-textarea {\n  min-height: 120px;\n  resize: vertical;\n}',
+
+        // Navigation
+        'nav': '.nav {\n  display: flex;\n  align-items: center;\n  gap: 2rem;\n  padding: 1rem 2rem;\n}\n.nav-brand {\n  font-size: 1.5rem;\n  font-weight: 700;\n  text-decoration: none;\n  color: inherit;\n}\n.nav-links {\n  display: flex;\n  gap: 1.5rem;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n.nav-link {\n  text-decoration: none;\n  color: #4b5563;\n  transition: color 0.2s;\n}\n.nav-link:hover {\n  color: #2563eb;\n}',
+
+        // Hero Section
+        'hero': '.hero {\n  padding: 6rem 2rem;\n  text-align: center;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: #fff;\n}\n.hero-title {\n  font-size: 3rem;\n  font-weight: 700;\n  margin: 0 0 1rem;\n}\n.hero-subtitle {\n  font-size: 1.25rem;\n  opacity: 0.9;\n  margin: 0 0 2rem;\n}\n@media (max-width: 768px) {\n  .hero-title {\n    font-size: 2rem;\n  }\n}',
+
+        // Footer
+        'footer': '.footer {\n  padding: 3rem 2rem;\n  background: #1f2937;\n  color: #9ca3af;\n}\n.footer-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n  gap: 2rem;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.footer-title {\n  color: #fff;\n  font-size: 1.125rem;\n  margin: 0 0 1rem;\n}\n.footer-links {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.footer-links a {\n  color: #9ca3af;\n  text-decoration: none;\n}\n.footer-links a:hover {\n  color: #fff;\n}',
+
+        // Animations
+        'fade-in': '@keyframes fadeIn {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n.fade-in {\n  animation: fadeIn 0.5s ease forwards;\n}',
+        'slide-up': '@keyframes slideUp {\n  from {\n    opacity: 0;\n    transform: translateY(20px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.slide-up {\n  animation: slideUp 0.5s ease forwards;\n}',
+        'pulse': '@keyframes pulse {\n  0%, 100% { opacity: 1; }\n  50% { opacity: 0.5; }\n}\n.pulse {\n  animation: pulse 2s ease-in-out infinite;\n}',
+        'spin': '@keyframes spin {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}\n.spin {\n  animation: spin 1s linear infinite;\n}',
+
+        // Utilities
+        'utilities': '/* Spacing */\n.m-0 { margin: 0; }\n.m-1 { margin: 0.25rem; }\n.m-2 { margin: 0.5rem; }\n.m-3 { margin: 1rem; }\n.m-4 { margin: 1.5rem; }\n.m-5 { margin: 2rem; }\n.p-0 { padding: 0; }\n.p-1 { padding: 0.25rem; }\n.p-2 { padding: 0.5rem; }\n.p-3 { padding: 1rem; }\n.p-4 { padding: 1.5rem; }\n.p-5 { padding: 2rem; }\n\n/* Text */\n.text-center { text-align: center; }\n.text-left { text-align: left; }\n.text-right { text-align: right; }\n.font-bold { font-weight: 700; }\n.font-medium { font-weight: 500; }\n\n/* Display */\n.hidden { display: none; }\n.block { display: block; }\n.inline-block { display: inline-block; }\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}',
+
+        // Reset/Normalize
+        'reset': '/* CSS Reset */\n*, *::before, *::after {\n  box-sizing: border-box;\n}\n* {\n  margin: 0;\n}\nhtml {\n  -webkit-text-size-adjust: 100%;\n}\nbody {\n  line-height: 1.5;\n  -webkit-font-smoothing: antialiased;\n}\nimg, picture, video, canvas, svg {\n  display: block;\n  max-width: 100%;\n}\ninput, button, textarea, select {\n  font: inherit;\n}\np, h1, h2, h3, h4, h5, h6 {\n  overflow-wrap: break-word;\n}\na {\n  color: inherit;\n  text-decoration: inherit;\n}\nbutton {\n  background: none;\n  border: none;\n  cursor: pointer;\n}'
     };
 
     // Initialize when DOM is ready
@@ -60,6 +90,9 @@
         initSaveHandler();
         initCssSnippets();
         initClassSuggestions();
+        initCodeTools();
+        initFullscreen();
+        initCollapsibleSidebar();
     });
 
     /**
@@ -146,6 +179,17 @@
         }
         var $textarea = $('#codesite-' + type);
         return $textarea.length ? $textarea.val() : '';
+    }
+
+    /**
+     * Set editor value
+     */
+    function setEditorValue(type, value) {
+        if (editors[type] && editors[type].codemirror) {
+            editors[type].codemirror.setValue(value);
+        } else {
+            $('#codesite-' + type).val(value);
+        }
     }
 
     /**
@@ -362,11 +406,30 @@
      * Initialize CSS snippet insertion
      */
     function initCssSnippets() {
+        // Handle select dropdown
         $('#codesite-css-snippets').on('change', function() {
             var snippetKey = $(this).val();
             if (!snippetKey || !cssSnippets[snippetKey]) return;
+            insertSnippet(snippetKey);
+            $(this).val('');
+        });
 
+        // Handle searchable input
+        $('#codesite-snippet-search').on('change', function() {
+            var snippetKey = $(this).val().toLowerCase().trim();
+            if (!snippetKey || !cssSnippets[snippetKey]) return;
+            insertSnippet(snippetKey);
+            $(this).val('');
+        }).on('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                $(this).trigger('change');
+            }
+        });
+
+        function insertSnippet(snippetKey) {
             var snippet = cssSnippets[snippetKey];
+            if (!snippet) return;
 
             // Insert into CSS editor
             if (editors.css && editors.css.codemirror) {
@@ -391,12 +454,9 @@
                 }
             }
 
-            // Reset dropdown
-            $(this).val('');
-
             // Trigger preview update
             debouncePreview();
-        });
+        }
     }
 
     /**
@@ -501,7 +561,317 @@
         }
     }
 
+    /**
+     * Initialize code formatting tools
+     */
+    function initCodeTools() {
+        // Format HTML button
+        $(document).on('click', '.codesite-format-html', function() {
+            var html = getEditorValue('html');
+            var formatted = formatHTML(html);
+            setEditorValue('html', formatted);
+            debouncePreview();
+        });
+
+        // Format CSS button
+        $(document).on('click', '.codesite-format-css', function() {
+            var css = getEditorValue('css');
+            var formatted = formatCSS(css);
+            setEditorValue('css', formatted);
+            debouncePreview();
+        });
+
+        // Format JS button
+        $(document).on('click', '.codesite-format-js', function() {
+            var js = getEditorValue('js');
+            var formatted = formatJS(js);
+            setEditorValue('js', formatted);
+            debouncePreview();
+        });
+    }
+
+    /**
+     * Format HTML code
+     */
+    function formatHTML(html) {
+        if (!html.trim()) return html;
+
+        var indent = 0;
+        var indentStr = '  ';
+        var result = '';
+        var inTag = false;
+        var tagName = '';
+        var selfClosing = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+
+        // Normalize whitespace
+        html = html.replace(/>\s+</g, '><').trim();
+
+        for (var i = 0; i < html.length; i++) {
+            var char = html[i];
+
+            if (char === '<') {
+                inTag = true;
+                tagName = '';
+
+                // Check if closing tag
+                if (html[i + 1] === '/') {
+                    indent = Math.max(0, indent - 1);
+                }
+
+                if (result && !result.endsWith('\n')) {
+                    result += '\n';
+                }
+                result += indentStr.repeat(indent);
+            }
+
+            if (inTag && char !== '<' && char !== '>') {
+                if (char !== ' ' && char !== '/') {
+                    tagName += char.toLowerCase();
+                }
+            }
+
+            result += char;
+
+            if (char === '>') {
+                inTag = false;
+
+                // Increase indent for opening tags (not self-closing or closing)
+                if (html[i - 1] !== '/' && !html.substring(Math.max(0, i - 10), i).includes('</')) {
+                    if (selfClosing.indexOf(tagName) === -1 && tagName && tagName[0] !== '/') {
+                        indent++;
+                    }
+                }
+            }
+        }
+
+        return result.trim();
+    }
+
+    /**
+     * Format CSS code
+     */
+    function formatCSS(css) {
+        if (!css.trim()) return css;
+
+        var result = '';
+        var indent = 0;
+        var indentStr = '  ';
+        var inComment = false;
+        var inString = false;
+        var stringChar = '';
+
+        // Remove extra whitespace but preserve structure
+        css = css.replace(/\s+/g, ' ').trim();
+
+        for (var i = 0; i < css.length; i++) {
+            var char = css[i];
+            var nextChar = css[i + 1] || '';
+            var prevChar = css[i - 1] || '';
+
+            // Handle comments
+            if (char === '/' && nextChar === '*' && !inString) {
+                inComment = true;
+                if (result && !result.endsWith('\n')) {
+                    result += '\n' + indentStr.repeat(indent);
+                }
+            }
+            if (char === '/' && prevChar === '*' && inComment) {
+                result += char + '\n';
+                inComment = false;
+                continue;
+            }
+
+            // Handle strings
+            if ((char === '"' || char === "'") && prevChar !== '\\' && !inComment) {
+                if (!inString) {
+                    inString = true;
+                    stringChar = char;
+                } else if (char === stringChar) {
+                    inString = false;
+                }
+            }
+
+            if (!inComment && !inString) {
+                if (char === '{') {
+                    result += ' {\n';
+                    indent++;
+                    result += indentStr.repeat(indent);
+                    continue;
+                }
+                if (char === '}') {
+                    indent = Math.max(0, indent - 1);
+                    if (!result.endsWith('\n')) {
+                        result += '\n';
+                    }
+                    result += indentStr.repeat(indent) + '}\n';
+                    if (nextChar && nextChar !== '}') {
+                        result += '\n';
+                    }
+                    continue;
+                }
+                if (char === ';') {
+                    result += ';\n' + indentStr.repeat(indent);
+                    continue;
+                }
+                if (char === ':' && nextChar !== ' ') {
+                    result += ': ';
+                    continue;
+                }
+                if (char === ' ' && (result.endsWith('\n') || result.endsWith('  '))) {
+                    continue;
+                }
+            }
+
+            result += char;
+        }
+
+        // Clean up extra whitespace
+        result = result.replace(/\n\s*\n\s*\n/g, '\n\n');
+        result = result.replace(/{\s*\n\s*\n/g, '{\n');
+        result = result.replace(/;\s*\n\s*}/g, ';\n}');
+
+        return result.trim();
+    }
+
+    /**
+     * Format JavaScript code
+     */
+    function formatJS(js) {
+        if (!js.trim()) return js;
+
+        var result = '';
+        var indent = 0;
+        var indentStr = '  ';
+        var inString = false;
+        var stringChar = '';
+        var inComment = false;
+        var inLineComment = false;
+
+        for (var i = 0; i < js.length; i++) {
+            var char = js[i];
+            var nextChar = js[i + 1] || '';
+            var prevChar = js[i - 1] || '';
+
+            // Handle line comments
+            if (char === '/' && nextChar === '/' && !inString && !inComment) {
+                inLineComment = true;
+            }
+            if (char === '\n' && inLineComment) {
+                inLineComment = false;
+                result += char + indentStr.repeat(indent);
+                continue;
+            }
+
+            // Handle block comments
+            if (char === '/' && nextChar === '*' && !inString) {
+                inComment = true;
+            }
+            if (char === '/' && prevChar === '*' && inComment) {
+                result += char;
+                inComment = false;
+                continue;
+            }
+
+            // Handle strings
+            if ((char === '"' || char === "'" || char === '`') && prevChar !== '\\' && !inComment && !inLineComment) {
+                if (!inString) {
+                    inString = true;
+                    stringChar = char;
+                } else if (char === stringChar) {
+                    inString = false;
+                }
+            }
+
+            if (!inComment && !inLineComment && !inString) {
+                if (char === '{') {
+                    result += ' {\n';
+                    indent++;
+                    result += indentStr.repeat(indent);
+                    continue;
+                }
+                if (char === '}') {
+                    indent = Math.max(0, indent - 1);
+                    if (!result.endsWith('\n')) {
+                        result += '\n';
+                    }
+                    result += indentStr.repeat(indent) + '}';
+                    if (nextChar && nextChar !== ';' && nextChar !== ',' && nextChar !== ')') {
+                        result += '\n' + indentStr.repeat(indent);
+                    }
+                    continue;
+                }
+                if (char === ';') {
+                    result += ';\n' + indentStr.repeat(indent);
+                    continue;
+                }
+                if (char === ' ' && (result.endsWith('\n') || result.endsWith('  '))) {
+                    continue;
+                }
+            }
+
+            result += char;
+        }
+
+        // Clean up
+        result = result.replace(/\n\s*\n\s*\n/g, '\n\n');
+
+        return result.trim();
+    }
+
+    /**
+     * Initialize fullscreen mode
+     */
+    function initFullscreen() {
+        $(document).on('click', '.codesite-fullscreen-toggle', function() {
+            var $pane = $(this).closest('.codesite-pane');
+            var $wrap = $('.codesite-editor-wrap');
+
+            if ($pane.hasClass('fullscreen')) {
+                $pane.removeClass('fullscreen');
+                $wrap.removeClass('has-fullscreen');
+                $(this).attr('title', 'Fullscreen').find('.dashicons').removeClass('dashicons-editor-contract').addClass('dashicons-editor-expand');
+            } else {
+                $('.codesite-pane').removeClass('fullscreen');
+                $pane.addClass('fullscreen');
+                $wrap.addClass('has-fullscreen');
+                $(this).attr('title', 'Exit Fullscreen').find('.dashicons').removeClass('dashicons-editor-expand').addClass('dashicons-editor-contract');
+            }
+
+            setTimeout(refreshEditors, 100);
+        });
+
+        // ESC to exit fullscreen
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && $('.codesite-pane.fullscreen').length) {
+                $('.codesite-fullscreen-toggle').trigger('click');
+            }
+        });
+    }
+
+    /**
+     * Initialize collapsible sidebar
+     */
+    function initCollapsibleSidebar() {
+        $(document).on('click', '.codesite-sidebar-toggle', function() {
+            var $sidebar = $('.codesite-editor-sidebar');
+            var $main = $('.codesite-editor-main');
+
+            $sidebar.toggleClass('collapsed');
+
+            if ($sidebar.hasClass('collapsed')) {
+                $(this).attr('title', 'Show Sidebar').find('.dashicons').removeClass('dashicons-arrow-right-alt2').addClass('dashicons-arrow-left-alt2');
+            } else {
+                $(this).attr('title', 'Hide Sidebar').find('.dashicons').removeClass('dashicons-arrow-left-alt2').addClass('dashicons-arrow-right-alt2');
+            }
+
+            setTimeout(refreshEditors, 100);
+        });
+    }
+
     // Expose editors for external access
     window.codesiteEditors = editors;
+    window.codesiteFormatHTML = formatHTML;
+    window.codesiteFormatCSS = formatCSS;
+    window.codesiteFormatJS = formatJS;
 
 })(jQuery);

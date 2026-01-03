@@ -7,7 +7,7 @@ Tags: page builder, code editor, html, css, javascript, templates
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,17 @@ Use the {{field}} syntax in your HTML. For example:
 - {{menu:primary}} - Your primary navigation menu
 
 == Changelog ==
+
+= 1.2.0 =
+* Added code formatting buttons (HTML, CSS, JS) - beautify code without external libraries
+* Added fullscreen mode for each editor pane
+* Added collapsible sidebar for more editing space
+* Searchable CSS snippets dropdown with datalist
+* Extended CSS snippets library: buttons, cards, forms, navigation, hero, footer, animations, utilities, CSS reset
+* Removed wrapper divs from header/footer layouts - outputs raw HTML
+* Simplified JS output - no IIFE wrappers, outputs raw code
+* Fixed CSS not loading on frontend (pre-render content before wp_head)
+* Ctrl+S keyboard shortcut to save
 
 = 1.1.1 =
 * Added CSS snippets dropdown with Flexbox, Grid, Layout, Typography, Effects, and Responsive shortcuts
