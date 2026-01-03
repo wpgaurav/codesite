@@ -385,6 +385,11 @@
     height: 100% !important;
     font-size: 13px;
     background: #fff !important;
+    padding-bottom: 50px;
+}
+
+.codesite-pane-content .CodeMirror-scroll {
+    padding-bottom: 50px;
 }
 
 /* Preview Area (top section) - Light */
@@ -780,33 +785,45 @@
 /* Fullscreen Mode */
 .codesite-pane.fullscreen {
     position: fixed !important;
-    top: 32px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100000;
-    background: #fff;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 999999 !important;
+    background: #fff !important;
     flex: none !important;
-    width: 100% !important;
-    height: calc(100vh - 32px) !important;
-    border-radius: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+}
+
+.codesite-pane.fullscreen .codesite-pane-header {
+    padding: 12px 20px;
 }
 
 .codesite-pane.fullscreen .codesite-pane-content {
-    height: calc(100vh - 80px) !important;
+    flex: 1;
+    height: calc(100vh - 50px) !important;
 }
 
 .codesite-pane.fullscreen .CodeMirror {
     height: 100% !important;
 }
 
-.codesite-editor-wrap.has-fullscreen .codesite-pane:not(.fullscreen) {
-    display: none;
+.codesite-pane.fullscreen .codesite-fullscreen-toggle .dashicons:before {
+    content: "\f506"; /* compress icon */
 }
 
-.codesite-editor-wrap.has-fullscreen .codesite-preview-area,
-.codesite-editor-wrap.has-fullscreen .codesite-editor-sidebar {
-    display: none;
+body.codesite-fullscreen-active {
+    overflow: hidden !important;
+}
+
+body.codesite-fullscreen-active #adminmenumain,
+body.codesite-fullscreen-active #wpadminbar,
+body.codesite-fullscreen-active .codesite-editor-wrap {
+    z-index: 1 !important;
 }
 
 /* Collapsible Sidebar */
@@ -876,4 +893,104 @@
     width: 16px;
     height: 16px;
     vertical-align: middle;
+}
+
+/* Multi-Pane Support */
+.codesite-pane-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.codesite-pane-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    background: #e9ecef;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.codesite-pane-group-header .group-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1d2327;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.codesite-add-pane {
+    padding: 2px 8px;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    background: #fff;
+    color: #2271b1;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.codesite-add-pane:hover {
+    background: #f0f0f1;
+    border-color: #2271b1;
+}
+
+.codesite-add-pane .dashicons {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+.codesite-remove-pane {
+    color: #cc1818 !important;
+    border-color: #cc1818 !important;
+}
+
+.codesite-remove-pane:hover {
+    background: #fcebea !important;
+    color: #8a1f1f !important;
+}
+
+/* Multiple panes in a group */
+.codesite-pane-group .codesite-pane {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.codesite-pane-group .codesite-pane:last-child {
+    border-bottom: none;
+}
+
+/* Code editors with multi-pane */
+.codesite-code-editors {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 250px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.codesite-code-editors .codesite-pane {
+    min-height: 180px;
+    max-height: 350px;
+}
+
+/* Add pane row */
+.codesite-add-pane-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #f6f7f7;
+    border-top: 1px solid #dcdcde;
+    justify-content: center;
+}
+
+/* Pane number indicator */
+.codesite-pane-header .pane-number {
+    font-size: 10px;
+    color: #8c8f94;
+    margin-left: 5px;
 }

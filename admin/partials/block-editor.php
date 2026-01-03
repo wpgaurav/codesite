@@ -80,6 +80,9 @@ if ( ! in_array( 'general', $categories, true ) ) {
                             <button type="button" class="codesite-pane-tool codesite-fullscreen-toggle" title="<?php esc_attr_e( 'Fullscreen', 'codesite' ); ?>">
                                 <span class="dashicons dashicons-editor-expand"></span>
                             </button>
+                            <button type="button" class="codesite-pane-tool codesite-add-pane" data-type="html" title="<?php esc_attr_e( 'Add HTML Pane', 'codesite' ); ?>">
+                                <span class="dashicons dashicons-plus-alt2"></span>
+                            </button>
                         </div>
                         <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
                     </div>
@@ -104,6 +107,9 @@ if ( ! in_array( 'general', $categories, true ) ) {
                             <button type="button" class="codesite-pane-tool codesite-fullscreen-toggle" title="<?php esc_attr_e( 'Fullscreen', 'codesite' ); ?>">
                                 <span class="dashicons dashicons-editor-expand"></span>
                             </button>
+                            <button type="button" class="codesite-pane-tool codesite-add-pane" data-type="css" title="<?php esc_attr_e( 'Add CSS Pane', 'codesite' ); ?>">
+                                <span class="dashicons dashicons-plus-alt2"></span>
+                            </button>
                         </div>
                         <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>
                     </div>
@@ -121,6 +127,9 @@ if ( ! in_array( 'general', $categories, true ) ) {
                             </button>
                             <button type="button" class="codesite-pane-tool codesite-fullscreen-toggle" title="<?php esc_attr_e( 'Fullscreen', 'codesite' ); ?>">
                                 <span class="dashicons dashicons-editor-expand"></span>
+                            </button>
+                            <button type="button" class="codesite-pane-tool codesite-add-pane" data-type="js" title="<?php esc_attr_e( 'Add JS Pane', 'codesite' ); ?>">
+                                <span class="dashicons dashicons-plus-alt2"></span>
                             </button>
                         </div>
                         <button type="button" class="codesite-pane-toggle" title="<?php esc_attr_e( 'Toggle pane', 'codesite' ); ?>">−</button>

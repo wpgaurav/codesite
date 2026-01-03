@@ -3,7 +3,7 @@
  * Plugin Name: CodeSite
  * Plugin URI: https://gauravtiwari.org/wordpress-plugins/codesite/
  * Description: Build WordPress sites with pure HTML, CSS, and JS. No page builder bloat.
- * Version: 1.2.0
+ * Version: 1.2.2
  * Author: Gaurav Tiwari
  * Author URI: https://gauravtiwari.org
  * License: GPL-2.0+
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Plugin version.
-define( 'CODESITE_VERSION', '1.2.0' );
+define( 'CODESITE_VERSION', '1.2.2' );
 
 // Plugin path.
 define( 'CODESITE_PATH', plugin_dir_path( __FILE__ ) );
@@ -49,6 +49,25 @@ function codesite_deactivate() {
 
 register_activation_hook( __FILE__, 'codesite_activate' );
 register_deactivation_hook( __FILE__, 'codesite_deactivate' );
+
+/**
+ * Check for plugin updates and run upgrade routines.
+ */
+function codesite_check_upgrade() {
+    $stored_version = get_option( 'codesite_version', '0' );
+
+    if ( version_compare( $stored_version, CODESITE_VERSION, '<' ) ) {
+        require_once CODESITE_PATH . 'includes/class-codesite-activator.php';
+
+        // Create default layouts if upgrading from pre-1.2.1
+        if ( version_compare( $stored_version, '1.2.1', '<' ) ) {
+            CodeSite_Activator::activate();
+        }
+
+        update_option( 'codesite_version', CODESITE_VERSION );
+    }
+}
+add_action( 'plugins_loaded', 'codesite_check_upgrade' );
 
 /**
  * The core plugin class.
