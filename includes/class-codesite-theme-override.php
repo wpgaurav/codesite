@@ -38,6 +38,11 @@ class CodeSite_Theme_Override {
             return false;
         }
 
+        // If theme override is enabled, always render (using default layouts).
+        if ( $this->is_enabled() ) {
+            return true;
+        }
+
         // Check for override on current post.
         if ( is_singular() ) {
             $override = CodeSite_Overrides::get( get_the_ID() );

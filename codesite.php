@@ -3,7 +3,7 @@
  * Plugin Name: CodeSite
  * Plugin URI: https://gauravtiwari.org/wordpress-plugins/codesite/
  * Description: Build WordPress sites with pure HTML, CSS, and JS. No page builder bloat.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Gaurav Tiwari
  * Author URI: https://gauravtiwari.org
  * License: GPL-2.0+
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Plugin version.
-define( 'CODESITE_VERSION', '1.1.0' );
+define( 'CODESITE_VERSION', '1.1.1' );
 
 // Plugin path.
 define( 'CODESITE_PATH', plugin_dir_path( __FILE__ ) );

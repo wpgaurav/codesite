@@ -293,6 +293,49 @@
     letter-spacing: 0.5px;
 }
 
+/* CSS Tools (Snippets & Classes) */
+.codesite-css-tools {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.codesite-snippet-select,
+.codesite-class-select {
+    font-size: 11px;
+    padding: 2px 6px;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    background: #fff;
+    color: #50575e;
+    cursor: pointer;
+    max-width: 110px;
+}
+
+.codesite-snippet-select:hover,
+.codesite-class-select:hover {
+    border-color: #2271b1;
+}
+
+.codesite-snippet-select:focus,
+.codesite-class-select:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.codesite-snippet-select option,
+.codesite-class-select option {
+    font-size: 12px;
+}
+
+.codesite-snippet-select optgroup,
+.codesite-class-select optgroup {
+    font-weight: 600;
+    color: #1e1e1e;
+}
+
 .codesite-pane-toggle {
     background: none;
     border: none;
