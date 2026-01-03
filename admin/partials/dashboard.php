@@ -87,16 +87,38 @@ $tangible_active = $tangible->is_active();
                     <strong><?php echo ! empty( $settings['theme_override'] ) ? esc_html__( 'Active', 'codesite' ) : esc_html__( 'Disabled', 'codesite' ); ?></strong>
                 </li>
                 <li>
-                    <?php if ( $tangible_active ) : ?>
+                    <?php
+                    $tangible_status = $tangible->get_status();
+                    $install_url = wp_nonce_url(
+                        admin_url( 'update.php?action=install-plugin&plugin=tangible-loops-and-logic' ),
+                        'install-plugin_tangible-loops-and-logic'
+                    );
+                    ?>
+                    <?php if ( $tangible_status['status'] === 'active' ) : ?>
                         <span class="status-ok">&#10003;</span>
+                    <?php elseif ( $tangible_status['status'] === 'inactive' ) : ?>
+                        <span class="status-warning">&#9888;</span>
                     <?php else : ?>
                         <span class="status-info">&#8226;</span>
                     <?php endif; ?>
                     <?php esc_html_e( 'Tangible Loops & Logic:', 'codesite' ); ?>
-                    <strong><?php echo $tangible_active ? esc_html__( 'Installed', 'codesite' ) : esc_html__( 'Not Installed', 'codesite' ); ?></strong>
-                    <?php if ( ! $tangible_active ) : ?>
-                        <a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=tangible+loops&tab=search' ) ); ?>" class="button button-small">
-                            <?php esc_html_e( 'Install', 'codesite' ); ?>
+                    <strong>
+                        <?php
+                        if ( $tangible_status['status'] === 'active' ) {
+                            esc_html_e( 'Active', 'codesite' );
+                        } elseif ( $tangible_status['status'] === 'inactive' ) {
+                            esc_html_e( 'Installed (Not Active)', 'codesite' );
+                        } else {
+                            esc_html_e( 'Not Installed', 'codesite' );
+                        }
+                        ?>
+                    </strong>
+                    <?php if ( $tangible_status['status'] !== 'active' ) : ?>
+                        <a href="<?php echo esc_url( $install_url ); ?>" class="button button-small" style="margin-left: 8px;">
+                            <?php echo $tangible_status['status'] === 'inactive' ? esc_html__( 'Activate', 'codesite' ) : esc_html__( 'Install Free', 'codesite' ); ?>
+                        </a>
+                        <a href="https://wordpress.org/plugins/tangible-loops-and-logic/" target="_blank" rel="noopener" class="button button-small">
+                            <?php esc_html_e( 'Learn More', 'codesite' ); ?>
                         </a>
                     <?php endif; ?>
                 </li>

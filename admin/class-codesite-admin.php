@@ -128,18 +128,11 @@ class CodeSite_Admin {
             CODESITE_VERSION
         );
 
-        // CodeMirror.
+        // CodeMirror from CDN.
         wp_enqueue_style(
             'codemirror',
-            CODESITE_URL . 'assets/vendor/codemirror/codemirror.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css',
             array(),
-            '5.65.16'
-        );
-
-        wp_enqueue_style(
-            'codemirror-theme',
-            CODESITE_URL . 'assets/vendor/codemirror/dracula.css',
-            array( 'codemirror' ),
             '5.65.16'
         );
     }
@@ -154,35 +147,27 @@ class CodeSite_Admin {
             return;
         }
 
-        // CodeMirror.
+        // CodeMirror from CDN.
         wp_enqueue_script(
             'codemirror',
-            CODESITE_URL . 'assets/vendor/codemirror/codemirror.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js',
             array(),
             '5.65.16',
             true
         );
 
-        // CodeMirror modes.
+        // CodeMirror modes from CDN.
         wp_enqueue_script(
             'codemirror-xml',
-            CODESITE_URL . 'assets/vendor/codemirror/xml.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js',
             array( 'codemirror' ),
             '5.65.16',
             true
         );
 
         wp_enqueue_script(
-            'codemirror-html',
-            CODESITE_URL . 'assets/vendor/codemirror/htmlmixed.js',
-            array( 'codemirror', 'codemirror-xml', 'codemirror-css', 'codemirror-javascript' ),
-            '5.65.16',
-            true
-        );
-
-        wp_enqueue_script(
             'codemirror-css',
-            CODESITE_URL . 'assets/vendor/codemirror/css.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js',
             array( 'codemirror' ),
             '5.65.16',
             true
@@ -190,24 +175,24 @@ class CodeSite_Admin {
 
         wp_enqueue_script(
             'codemirror-javascript',
-            CODESITE_URL . 'assets/vendor/codemirror/javascript.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js',
             array( 'codemirror' ),
             '5.65.16',
             true
         );
 
-        // CodeMirror addons.
         wp_enqueue_script(
-            'codemirror-emmet',
-            CODESITE_URL . 'assets/vendor/codemirror/emmet.js',
-            array( 'codemirror' ),
+            'codemirror-html',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js',
+            array( 'codemirror', 'codemirror-xml', 'codemirror-css', 'codemirror-javascript' ),
             '5.65.16',
             true
         );
 
+        // CodeMirror addons from CDN.
         wp_enqueue_script(
             'codemirror-closetag',
-            CODESITE_URL . 'assets/vendor/codemirror/closetag.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js',
             array( 'codemirror' ),
             '5.65.16',
             true
@@ -215,7 +200,15 @@ class CodeSite_Admin {
 
         wp_enqueue_script(
             'codemirror-closebrackets',
-            CODESITE_URL . 'assets/vendor/codemirror/closebrackets.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js',
+            array( 'codemirror' ),
+            '5.65.16',
+            true
+        );
+
+        wp_enqueue_script(
+            'codemirror-matchbrackets',
+            'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js',
             array( 'codemirror' ),
             '5.65.16',
             true

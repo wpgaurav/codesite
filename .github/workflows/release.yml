@@ -46,35 +46,13 @@ jobs:
           cp codesite.php build/codesite/
           cp readme.txt build/codesite/
 
+          # Remove vendor stubs (CodeMirror is loaded from CDN)
+          rm -rf build/codesite/assets/vendor
+
           # Remove development files if any
           find build/codesite -name "*.map" -delete
           find build/codesite -name ".DS_Store" -delete
           find build/codesite -name "Thumbs.db" -delete
-
-      - name: Download CodeMirror
-        run: |
-          cd build/codesite/assets/vendor/codemirror
-
-          # Download CodeMirror 5.65.16
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js" -o codemirror.js
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" -o codemirror.css
-
-          # Theme
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" -o dracula.css
-
-          # Modes
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js" -o xml.js
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js" -o css.js
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js" -o javascript.js
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js" -o htmlmixed.js
-
-          # Addons
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js" -o closetag.js
-          curl -sL "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js" -o closebrackets.js
-
-          # Remove placeholder README
-          rm -f README.md
-          rm -f emmet.js
 
       - name: Create ZIP file
         run: |

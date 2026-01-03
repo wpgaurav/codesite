@@ -24,6 +24,30 @@
      * Initialize CodeMirror editors
      */
     function initEditors() {
+        // Check if CodeMirror is available
+        if (typeof CodeMirror === 'undefined') {
+            console.warn('CodeMirror not loaded, using plain textareas');
+            // Make textareas visible and functional
+            $('.codesite-pane-content textarea').css({
+                'display': 'block',
+                'width': '100%',
+                'height': '100%',
+                'border': 'none',
+                'padding': '12px',
+                'font-family': "'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace",
+                'font-size': '13px',
+                'line-height': '1.5',
+                'resize': 'none',
+                'background': '#fff',
+                'color': '#1f2937',
+                'box-sizing': 'border-box'
+            });
+
+            // Attach change handlers for preview
+            $('#codesite-html, #codesite-css, #codesite-js').on('input', debouncePreview);
+            return;
+        }
+
         var editorConfig = {
             lineNumbers: true,
             autoCloseBrackets: true,
@@ -33,7 +57,7 @@
             tabSize: 2,
             indentWithTabs: false,
             lineWrapping: true,
-            theme: 'dracula'
+            theme: 'default'
         };
 
         // HTML Editor
@@ -69,6 +93,13 @@
                 editor.refresh();
             });
         });
+
+        // Initial refresh after a short delay
+        setTimeout(function() {
+            Object.values(editors).forEach(function(editor) {
+                editor.refresh();
+            });
+        }, 100);
     }
 
     /**
@@ -88,15 +119,26 @@
     }
 
     /**
+     * Get editor value (works with both CodeMirror and plain textareas)
+     */
+    function getEditorValue(type) {
+        if (editors[type]) {
+            return editors[type].getValue();
+        }
+        var $textarea = $('#codesite-' + type);
+        return $textarea.length ? $textarea.val() : '';
+    }
+
+    /**
      * Update the live preview
      */
     function updatePreview() {
         var $frame = $('#codesite-preview-frame');
         if (!$frame.length) return;
 
-        var html = editors.html ? editors.html.getValue() : '';
-        var css = editors.css ? editors.css.getValue() : '';
-        var js = editors.js ? editors.js.getValue() : '';
+        var html = getEditorValue('html');
+        var css = getEditorValue('css');
+        var js = getEditorValue('js');
 
         var previewHtml = '<!DOCTYPE html>' +
             '<html>' +
@@ -172,12 +214,22 @@
     function initFieldInserter() {
         $('#codesite-insert-field').on('click', function() {
             var field = $('#codesite-dynamic-field').val();
-            if (!field || !editors.html) return;
+            if (!field) return;
 
-            var doc = editors.html.getDoc();
-            var cursor = doc.getCursor();
-            doc.replaceRange(field, cursor);
-            editors.html.focus();
+            if (editors.html) {
+                var doc = editors.html.getDoc();
+                var cursor = doc.getCursor();
+                doc.replaceRange(field, cursor);
+                editors.html.focus();
+            } else {
+                // Fallback for plain textarea
+                var $textarea = $('#codesite-html');
+                var pos = $textarea[0].selectionStart;
+                var val = $textarea.val();
+                $textarea.val(val.substring(0, pos) + field + val.substring(pos));
+                $textarea[0].selectionStart = $textarea[0].selectionEnd = pos + field.length;
+                $textarea.focus();
+            }
         });
     }
 
@@ -248,9 +300,9 @@
                 data = {
                     name: $('#codesite-block-name').val(),
                     slug: $('#codesite-block-slug').val(),
-                    html: editors.html ? editors.html.getValue() : '',
-                    css: editors.css ? editors.css.getValue() : '',
-                    js: editors.js ? editors.js.getValue() : '',
+                    html: getEditorValue('html'),
+                    css: getEditorValue('css'),
+                    js: getEditorValue('js'),
                     category: $('#codesite-block-category').val() || 'general',
                     css_scope: $('#codesite-block-css-scope').val(),
                     status: $('#codesite-block-status').val()
@@ -258,16 +310,15 @@
                 break;
 
             case 'layout':
-                var useBlocks = $('input[name="codesite-layout-mode"]:checked').val() === 'blocks';
                 data = {
                     name: $('#codesite-layout-name').val(),
                     slug: $('#codesite-layout-slug').val(),
                     type: $('#codesite-layout-type').val(),
-                    use_blocks: useBlocks ? 1 : 0,
-                    block_order: useBlocks ? window.getBlockOrder() : [],
-                    custom_html: !useBlocks && editors.html ? editors.html.getValue() : '',
-                    custom_css: !useBlocks && editors.css ? editors.css.getValue() : '',
-                    custom_js: !useBlocks && editors.js ? editors.js.getValue() : '',
+                    use_blocks: 0,
+                    block_order: window.getBlockOrder ? window.getBlockOrder() : [],
+                    custom_html: getEditorValue('html'),
+                    custom_css: getEditorValue('css'),
+                    custom_js: getEditorValue('js'),
                     status: $('#codesite-layout-status').val()
                 };
                 break;
@@ -279,10 +330,10 @@
                     template_type: $('#codesite-template-type').val(),
                     header_layout_id: $('#codesite-template-header').val() || null,
                     footer_layout_id: $('#codesite-template-footer').val() || null,
-                    content_blocks: window.getBlockOrder(),
-                    custom_html: editors.html ? editors.html.getValue() : '',
-                    custom_css: editors.css ? editors.css.getValue() : '',
-                    custom_js: editors.js ? editors.js.getValue() : '',
+                    content_blocks: window.getBlockOrder ? window.getBlockOrder() : [],
+                    custom_html: getEditorValue('html'),
+                    custom_css: getEditorValue('css'),
+                    custom_js: getEditorValue('js'),
                     priority: parseInt($('#codesite-template-priority').val(), 10) || 10,
                     status: $('#codesite-template-status').val()
                 };
