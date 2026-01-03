@@ -10,74 +10,86 @@
     var editors = {};
     var previewDebounce = null;
 
-    // CSS Snippets Library
+    // CSS Snippets Library - declarations only (no class wrappers)
     var cssSnippets = {
         // Flexbox
-        'flex-row': '.flex-row {\n  display: flex;\n  flex-direction: row;\n  gap: 1rem;\n}',
-        'flex-col': '.flex-col {\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n}',
-        'flex-center': '.flex-center {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}',
-        'flex-between': '.flex-between {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}',
-        'flex-wrap': '.flex-wrap {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n}',
+        'flex-row': 'display: flex;\nflex-direction: row;\ngap: 1rem;',
+        'flex-col': 'display: flex;\nflex-direction: column;\ngap: 1rem;',
+        'flex-center': 'display: flex;\njustify-content: center;\nalign-items: center;',
+        'flex-between': 'display: flex;\njustify-content: space-between;\nalign-items: center;',
+        'flex-wrap': 'display: flex;\nflex-wrap: wrap;\ngap: 1rem;',
 
         // Grid
-        'grid-2col': '.grid-2col {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 1.5rem;\n}',
-        'grid-3col': '.grid-3col {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1.5rem;\n}',
-        'grid-4col': '.grid-4col {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 1.5rem;\n}',
-        'grid-auto': '.grid-auto {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n  gap: 1.5rem;\n}',
-        'grid-12': '/* 12 Column Grid System */\n.grid-12 {\n  display: grid;\n  grid-template-columns: repeat(12, 1fr);\n  gap: 1rem;\n}\n.col-1 { grid-column: span 1; }\n.col-2 { grid-column: span 2; }\n.col-3 { grid-column: span 3; }\n.col-4 { grid-column: span 4; }\n.col-5 { grid-column: span 5; }\n.col-6 { grid-column: span 6; }\n.col-7 { grid-column: span 7; }\n.col-8 { grid-column: span 8; }\n.col-9 { grid-column: span 9; }\n.col-10 { grid-column: span 10; }\n.col-11 { grid-column: span 11; }\n.col-12 { grid-column: span 12; }',
+        'grid-2col': 'display: grid;\ngrid-template-columns: repeat(2, 1fr);\ngap: 1.5rem;',
+        'grid-3col': 'display: grid;\ngrid-template-columns: repeat(3, 1fr);\ngap: 1.5rem;',
+        'grid-4col': 'display: grid;\ngrid-template-columns: repeat(4, 1fr);\ngap: 1.5rem;',
+        'grid-auto': 'display: grid;\ngrid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\ngap: 1.5rem;',
+        'grid-12': 'display: grid;\ngrid-template-columns: repeat(12, 1fr);\ngap: 1rem;',
 
         // Layout
-        'container': '.container {\n  width: 100%;\n  max-width: 1200px;\n  margin-left: auto;\n  margin-right: auto;\n  padding-left: 1rem;\n  padding-right: 1rem;\n}',
-        'full-height': '.full-height {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n}',
-        'sticky-header': '.sticky-header {\n  position: sticky;\n  top: 0;\n  z-index: 100;\n  background: #fff;\n}',
-        'sticky-footer': '/* Sticky Footer Layout */\n.page-wrapper {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n}\n.main-content {\n  flex: 1;\n}\n.sticky-footer {\n  margin-top: auto;\n}',
+        'container': 'width: 100%;\nmax-width: 1200px;\nmargin-left: auto;\nmargin-right: auto;\npadding-left: 1rem;\npadding-right: 1rem;',
+        'full-height': 'min-height: 100vh;\ndisplay: flex;\nflex-direction: column;',
+        'sticky-header': 'position: sticky;\ntop: 0;\nz-index: 100;\nbackground: #fff;',
+        'sticky-footer': 'margin-top: auto;',
 
         // Typography
-        'text-truncate': '.text-truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}',
-        'line-clamp': '.line-clamp {\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}',
-        'responsive-text': '.responsive-text {\n  font-size: clamp(1rem, 2.5vw, 2rem);\n  line-height: 1.4;\n}',
+        'text-truncate': 'white-space: nowrap;\noverflow: hidden;\ntext-overflow: ellipsis;',
+        'line-clamp': 'display: -webkit-box;\n-webkit-line-clamp: 3;\n-webkit-box-orient: vertical;\noverflow: hidden;',
+        'responsive-text': 'font-size: clamp(1rem, 2.5vw, 2rem);\nline-height: 1.4;',
 
         // Effects
-        'shadow': '.shadow {\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);\n}\n.shadow-lg {\n  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n}',
-        'transition': '.transition {\n  transition: all 0.3s ease;\n}\n.transition-fast {\n  transition: all 0.15s ease;\n}\n.transition-slow {\n  transition: all 0.5s ease;\n}',
-        'hover-scale': '.hover-scale {\n  transition: transform 0.3s ease;\n}\n.hover-scale:hover {\n  transform: scale(1.05);\n}',
-        'gradient-bg': '.gradient-bg {\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n}\n.gradient-text {\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  -webkit-background-clip: text;\n  -webkit-text-fill-color: transparent;\n  background-clip: text;\n}',
+        'shadow': 'box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);',
+        'shadow-lg': 'box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);',
+        'transition': 'transition: all 0.3s ease;',
+        'transition-fast': 'transition: all 0.15s ease;',
+        'hover-scale': 'transition: transform 0.3s ease;',
+        'gradient-bg': 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);',
 
         // Responsive
         'media-tablet': '@media (max-width: 768px) {\n  /* Tablet styles */\n  \n}',
         'media-mobile': '@media (max-width: 480px) {\n  /* Mobile styles */\n  \n}',
-        'hide-mobile': '.hide-mobile {\n  display: block;\n}\n@media (max-width: 768px) {\n  .hide-mobile {\n    display: none;\n  }\n}',
-        'show-mobile': '.show-mobile {\n  display: none;\n}\n@media (max-width: 768px) {\n  .show-mobile {\n    display: block;\n  }\n}',
 
         // Buttons
-        'btn': '.btn {\n  display: inline-block;\n  padding: 0.75rem 1.5rem;\n  font-size: 1rem;\n  font-weight: 500;\n  text-align: center;\n  text-decoration: none;\n  border: none;\n  border-radius: 0.375rem;\n  cursor: pointer;\n  transition: all 0.2s ease;\n}\n.btn-primary {\n  background: #2563eb;\n  color: #fff;\n}\n.btn-primary:hover {\n  background: #1d4ed8;\n}\n.btn-secondary {\n  background: #6b7280;\n  color: #fff;\n}\n.btn-secondary:hover {\n  background: #4b5563;\n}\n.btn-outline {\n  background: transparent;\n  border: 2px solid currentColor;\n}\n.btn-outline:hover {\n  background: rgba(0,0,0,0.05);\n}',
+        'btn': 'display: inline-block;\npadding: 0.75rem 1.5rem;\nfont-size: 1rem;\nfont-weight: 500;\ntext-align: center;\ntext-decoration: none;\nborder: none;\nborder-radius: 0.375rem;\ncursor: pointer;\ntransition: all 0.2s ease;',
+        'btn-primary': 'background: #2563eb;\ncolor: #fff;',
+        'btn-secondary': 'background: #6b7280;\ncolor: #fff;',
 
         // Cards
-        'card': '.card {\n  background: #fff;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 3px rgba(0,0,0,0.1);\n  overflow: hidden;\n}\n.card-img {\n  width: 100%;\n  height: 200px;\n  object-fit: cover;\n}\n.card-body {\n  padding: 1.5rem;\n}\n.card-title {\n  margin: 0 0 0.5rem;\n  font-size: 1.25rem;\n  font-weight: 600;\n}\n.card-text {\n  margin: 0;\n  color: #6b7280;\n}',
+        'card': 'background: #fff;\nborder-radius: 0.5rem;\nbox-shadow: 0 1px 3px rgba(0,0,0,0.1);\noverflow: hidden;',
+        'card-body': 'padding: 1.5rem;',
 
         // Forms
-        'form': '.form-group {\n  margin-bottom: 1rem;\n}\n.form-label {\n  display: block;\n  margin-bottom: 0.5rem;\n  font-weight: 500;\n}\n.form-input {\n  width: 100%;\n  padding: 0.75rem 1rem;\n  font-size: 1rem;\n  border: 1px solid #d1d5db;\n  border-radius: 0.375rem;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n.form-input:focus {\n  outline: none;\n  border-color: #2563eb;\n  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);\n}\n.form-textarea {\n  min-height: 120px;\n  resize: vertical;\n}',
+        'form-input': 'width: 100%;\npadding: 0.75rem 1rem;\nfont-size: 1rem;\nborder: 1px solid #d1d5db;\nborder-radius: 0.375rem;\ntransition: border-color 0.2s, box-shadow 0.2s;',
+        'form-label': 'display: block;\nmargin-bottom: 0.5rem;\nfont-weight: 500;',
 
         // Navigation
-        'nav': '.nav {\n  display: flex;\n  align-items: center;\n  gap: 2rem;\n  padding: 1rem 2rem;\n}\n.nav-brand {\n  font-size: 1.5rem;\n  font-weight: 700;\n  text-decoration: none;\n  color: inherit;\n}\n.nav-links {\n  display: flex;\n  gap: 1.5rem;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n.nav-link {\n  text-decoration: none;\n  color: #4b5563;\n  transition: color 0.2s;\n}\n.nav-link:hover {\n  color: #2563eb;\n}',
+        'nav': 'display: flex;\nalign-items: center;\ngap: 2rem;\npadding: 1rem 2rem;',
+        'nav-links': 'display: flex;\ngap: 1.5rem;\nlist-style: none;\nmargin: 0;\npadding: 0;',
 
         // Hero Section
-        'hero': '.hero {\n  padding: 6rem 2rem;\n  text-align: center;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: #fff;\n}\n.hero-title {\n  font-size: 3rem;\n  font-weight: 700;\n  margin: 0 0 1rem;\n}\n.hero-subtitle {\n  font-size: 1.25rem;\n  opacity: 0.9;\n  margin: 0 0 2rem;\n}\n@media (max-width: 768px) {\n  .hero-title {\n    font-size: 2rem;\n  }\n}',
+        'hero': 'padding: 6rem 2rem;\ntext-align: center;\nbackground: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\ncolor: #fff;',
 
         // Footer
-        'footer': '.footer {\n  padding: 3rem 2rem;\n  background: #1f2937;\n  color: #9ca3af;\n}\n.footer-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n  gap: 2rem;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.footer-title {\n  color: #fff;\n  font-size: 1.125rem;\n  margin: 0 0 1rem;\n}\n.footer-links {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.footer-links a {\n  color: #9ca3af;\n  text-decoration: none;\n}\n.footer-links a:hover {\n  color: #fff;\n}',
+        'footer': 'padding: 3rem 2rem;\nbackground: #1f2937;\ncolor: #9ca3af;',
 
         // Animations
-        'fade-in': '@keyframes fadeIn {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n.fade-in {\n  animation: fadeIn 0.5s ease forwards;\n}',
-        'slide-up': '@keyframes slideUp {\n  from {\n    opacity: 0;\n    transform: translateY(20px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.slide-up {\n  animation: slideUp 0.5s ease forwards;\n}',
-        'pulse': '@keyframes pulse {\n  0%, 100% { opacity: 1; }\n  50% { opacity: 0.5; }\n}\n.pulse {\n  animation: pulse 2s ease-in-out infinite;\n}',
-        'spin': '@keyframes spin {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}\n.spin {\n  animation: spin 1s linear infinite;\n}',
+        'fade-in': 'animation: fadeIn 0.5s ease forwards;',
+        'slide-up': 'animation: slideUp 0.5s ease forwards;',
+        'pulse': 'animation: pulse 2s ease-in-out infinite;',
+        'spin': 'animation: spin 1s linear infinite;',
+
+        // Keyframes (these need full syntax)
+        'keyframe-fade': '@keyframes fadeIn {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}',
+        'keyframe-slide': '@keyframes slideUp {\n  from { opacity: 0; transform: translateY(20px); }\n  to { opacity: 1; transform: translateY(0); }\n}',
 
         // Utilities
-        'utilities': '/* Spacing */\n.m-0 { margin: 0; }\n.m-1 { margin: 0.25rem; }\n.m-2 { margin: 0.5rem; }\n.m-3 { margin: 1rem; }\n.m-4 { margin: 1.5rem; }\n.m-5 { margin: 2rem; }\n.p-0 { padding: 0; }\n.p-1 { padding: 0.25rem; }\n.p-2 { padding: 0.5rem; }\n.p-3 { padding: 1rem; }\n.p-4 { padding: 1.5rem; }\n.p-5 { padding: 2rem; }\n\n/* Text */\n.text-center { text-align: center; }\n.text-left { text-align: left; }\n.text-right { text-align: right; }\n.font-bold { font-weight: 700; }\n.font-medium { font-weight: 500; }\n\n/* Display */\n.hidden { display: none; }\n.block { display: block; }\n.inline-block { display: inline-block; }\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}',
+        'center-text': 'text-align: center;',
+        'center-block': 'margin-left: auto;\nmargin-right: auto;',
+        'hidden': 'display: none;',
+        'sr-only': 'position: absolute;\nwidth: 1px;\nheight: 1px;\npadding: 0;\nmargin: -1px;\noverflow: hidden;\nclip: rect(0, 0, 0, 0);\nborder: 0;',
 
         // Reset/Normalize
-        'reset': '/* CSS Reset */\n*, *::before, *::after {\n  box-sizing: border-box;\n}\n* {\n  margin: 0;\n}\nhtml {\n  -webkit-text-size-adjust: 100%;\n}\nbody {\n  line-height: 1.5;\n  -webkit-font-smoothing: antialiased;\n}\nimg, picture, video, canvas, svg {\n  display: block;\n  max-width: 100%;\n}\ninput, button, textarea, select {\n  font: inherit;\n}\np, h1, h2, h3, h4, h5, h6 {\n  overflow-wrap: break-word;\n}\na {\n  color: inherit;\n  text-decoration: inherit;\n}\nbutton {\n  background: none;\n  border: none;\n  cursor: pointer;\n}'
+        'reset': '/* CSS Reset */\n*, *::before, *::after {\n  box-sizing: border-box;\n}\n* {\n  margin: 0;\n}\nbody {\n  line-height: 1.5;\n  -webkit-font-smoothing: antialiased;\n}\nimg, picture, video, canvas, svg {\n  display: block;\n  max-width: 100%;\n}\ninput, button, textarea, select {\n  font: inherit;\n}'
     };
 
     // Initialize when DOM is ready

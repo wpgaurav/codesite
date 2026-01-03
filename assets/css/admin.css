@@ -385,6 +385,11 @@
     height: 100% !important;
     font-size: 13px;
     background: #fff !important;
+    padding-bottom: 50px;
+}
+
+.codesite-pane-content .CodeMirror-scroll {
+    padding-bottom: 50px;
 }
 
 /* Preview Area (top section) - Light */
