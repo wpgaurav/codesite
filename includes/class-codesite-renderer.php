@@ -117,7 +117,7 @@ class CodeSite_Renderer {
 
         // Add layout CSS.
         if ( ! empty( $layout->custom_css ) ) {
-            CodeSite_CSS_Compiler::add( $layout->custom_css );
+            CodeSite_CSS_Compiler::add( $layout->custom_css, 'layout', $layout->id );
         }
 
         // Collect layout JS.
@@ -200,7 +200,7 @@ class CodeSite_Renderer {
 
         // Add template CSS.
         if ( ! empty( $template->custom_css ) ) {
-            CodeSite_CSS_Compiler::add( $template->custom_css );
+            CodeSite_CSS_Compiler::add( $template->custom_css, 'template', $template->id );
         }
 
         // Collect template JS.
@@ -394,7 +394,7 @@ class CodeSite_Renderer {
 
         // Add override CSS.
         if ( ! empty( $override->custom_css ) ) {
-            CodeSite_CSS_Compiler::add( $override->custom_css );
+            CodeSite_CSS_Compiler::add( $override->custom_css, 'override', $override->id );
         }
 
         // Collect override JS.
@@ -485,12 +485,19 @@ class CodeSite_Renderer {
             return;
         }
 
-        $css = CodeSite_CSS_Compiler::get_page_css();
+        $output_mode = CodeSite_Database::get_setting( 'output_mode', 'inline' );
 
-        if ( ! empty( $css ) ) {
-            echo "<style id='codesite-css'>\n";
-            echo $css;
-            echo "\n</style>";
+        if ( $output_mode === 'file' ) {
+            // Merged CSS for file mode.
+            $css = CodeSite_CSS_Compiler::get_merged();
+            if ( ! empty( $css ) ) {
+                echo "<style id='codesite-css'>\n";
+                echo $css;
+                echo "\n</style>";
+            }
+        } else {
+            // Separate style tags with unique IDs for inline mode.
+            echo CodeSite_CSS_Compiler::output_inline();
         }
     }
 

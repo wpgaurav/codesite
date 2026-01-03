@@ -825,25 +825,38 @@
         $(document).on('click', '.codesite-fullscreen-toggle', function() {
             var $pane = $(this).closest('.codesite-pane');
             var $wrap = $('.codesite-editor-wrap');
+            var $body = $('body');
 
             if ($pane.hasClass('fullscreen')) {
+                // Exit fullscreen
                 $pane.removeClass('fullscreen');
                 $wrap.removeClass('has-fullscreen');
+                $body.removeClass('codesite-fullscreen-active');
                 $(this).attr('title', 'Fullscreen').find('.dashicons').removeClass('dashicons-editor-contract').addClass('dashicons-editor-expand');
+
+                // Refresh editors after a longer delay to ensure layout is settled
+                setTimeout(function() {
+                    refreshEditors();
+                    // Extra refresh for CodeMirror to recalculate dimensions
+                    setTimeout(refreshEditors, 100);
+                }, 50);
             } else {
+                // Enter fullscreen
                 $('.codesite-pane').removeClass('fullscreen');
                 $pane.addClass('fullscreen');
                 $wrap.addClass('has-fullscreen');
+                $body.addClass('codesite-fullscreen-active');
                 $(this).attr('title', 'Exit Fullscreen').find('.dashicons').removeClass('dashicons-editor-expand').addClass('dashicons-editor-contract');
-            }
 
-            setTimeout(refreshEditors, 100);
+                // Refresh editors for fullscreen layout
+                setTimeout(refreshEditors, 50);
+            }
         });
 
         // ESC to exit fullscreen
         $(document).on('keydown', function(e) {
             if (e.key === 'Escape' && $('.codesite-pane.fullscreen').length) {
-                $('.codesite-fullscreen-toggle').trigger('click');
+                $('.codesite-pane.fullscreen').find('.codesite-fullscreen-toggle').trigger('click');
             }
         });
     }

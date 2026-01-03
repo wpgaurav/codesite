@@ -780,33 +780,45 @@
 /* Fullscreen Mode */
 .codesite-pane.fullscreen {
     position: fixed !important;
-    top: 32px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100000;
-    background: #fff;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 999999 !important;
+    background: #fff !important;
     flex: none !important;
-    width: 100% !important;
-    height: calc(100vh - 32px) !important;
-    border-radius: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+}
+
+.codesite-pane.fullscreen .codesite-pane-header {
+    padding: 12px 20px;
 }
 
 .codesite-pane.fullscreen .codesite-pane-content {
-    height: calc(100vh - 80px) !important;
+    flex: 1;
+    height: calc(100vh - 50px) !important;
 }
 
 .codesite-pane.fullscreen .CodeMirror {
     height: 100% !important;
 }
 
-.codesite-editor-wrap.has-fullscreen .codesite-pane:not(.fullscreen) {
-    display: none;
+.codesite-pane.fullscreen .codesite-fullscreen-toggle .dashicons:before {
+    content: "\f506"; /* compress icon */
 }
 
-.codesite-editor-wrap.has-fullscreen .codesite-preview-area,
-.codesite-editor-wrap.has-fullscreen .codesite-editor-sidebar {
-    display: none;
+body.codesite-fullscreen-active {
+    overflow: hidden !important;
+}
+
+body.codesite-fullscreen-active #adminmenumain,
+body.codesite-fullscreen-active #wpadminbar,
+body.codesite-fullscreen-active .codesite-editor-wrap {
+    z-index: 1 !important;
 }
 
 /* Collapsible Sidebar */

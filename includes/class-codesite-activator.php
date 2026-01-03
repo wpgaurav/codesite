@@ -13,6 +13,7 @@ class CodeSite_Activator {
         self::create_tables();
         self::set_default_options();
         self::add_capabilities();
+        self::create_default_layouts();
 
         // Flush rewrite rules.
         flush_rewrite_rules();
@@ -166,6 +167,249 @@ class CodeSite_Activator {
         $editor = get_role( 'editor' );
         if ( $editor ) {
             $editor->add_cap( 'edit_codesite_blocks' );
+        }
+    }
+
+    /**
+     * Create default layouts.
+     */
+    private static function create_default_layouts() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'codesite_layouts';
+
+        // Check if default layouts already exist.
+        $existing = $wpdb->get_var( "SELECT COUNT(*) FROM $table WHERE slug IN ('default-header', 'default-footer')" );
+        if ( $existing > 0 ) {
+            return;
+        }
+
+        // Default Header HTML.
+        $header_html = '<header class="site-header">
+    <div class="site-branding">
+        <a href="{{site_url}}" class="site-title">{{site_name}}</a>
+        <p class="site-tagline">{{site_tagline}}</p>
+    </div>
+    <button class="menu-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <nav class="site-nav">
+        {{menu:primary}}
+    </nav>
+</header>';
+
+        // Default Header CSS.
+        $header_css = '/* Header Layout */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.site-branding {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.site-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-decoration: none;
+}
+
+.site-title:hover {
+    color: #0073aa;
+}
+
+.site-tagline {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.site-nav ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.site-nav a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color 0.2s;
+}
+
+.site-nav a:hover {
+    color: #0073aa;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #333;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .site-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: none;
+        padding: 1rem 2rem;
+    }
+
+    .site-nav.active {
+        display: block;
+    }
+
+    .site-nav ul {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .site-nav li {
+        border-bottom: 1px solid #eee;
+    }
+
+    .site-nav li:last-child {
+        border-bottom: none;
+    }
+
+    .site-nav a {
+        display: block;
+        padding: 0.75rem 0;
+    }
+}';
+
+        // Default Header JS.
+        $header_js = '// Mobile menu toggle
+document.addEventListener("DOMContentLoaded", function() {
+    var toggle = document.querySelector(".menu-toggle");
+    var nav = document.querySelector(".site-nav");
+
+    if (toggle && nav) {
+        toggle.addEventListener("click", function() {
+            nav.classList.toggle("active");
+        });
+    }
+});';
+
+        // Default Footer HTML.
+        $footer_html = '<footer class="site-footer">
+    <div class="footer-content">
+        <p>&copy; {{current_year}} {{site_name}}. All rights reserved.</p>
+    </div>
+</footer>';
+
+        // Default Footer CSS.
+        $footer_css = '/* Footer Layout */
+.site-footer {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 2rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-content p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #999;
+}
+
+.footer-content a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-content a:hover {
+    text-decoration: underline;
+}';
+
+        // Create default header.
+        $header_id = null;
+        $result = $wpdb->insert(
+            $table,
+            array(
+                'name'        => 'Default Header',
+                'slug'        => 'default-header',
+                'type'        => 'header',
+                'block_order' => '[]',
+                'custom_html' => $header_html,
+                'custom_css'  => $header_css,
+                'custom_js'   => $header_js,
+                'use_blocks'  => 0,
+                'status'      => 'active',
+            ),
+            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s' )
+        );
+        if ( $result ) {
+            $header_id = $wpdb->insert_id;
+        }
+
+        // Create default footer.
+        $footer_id = null;
+        $result = $wpdb->insert(
+            $table,
+            array(
+                'name'        => 'Default Footer',
+                'slug'        => 'default-footer',
+                'type'        => 'footer',
+                'block_order' => '[]',
+                'custom_html' => $footer_html,
+                'custom_css'  => $footer_css,
+                'custom_js'   => '',
+                'use_blocks'  => 0,
+                'status'      => 'active',
+            ),
+            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s' )
+        );
+        if ( $result ) {
+            $footer_id = $wpdb->insert_id;
+        }
+
+        // Set as defaults.
+        if ( $header_id ) {
+            CodeSite_Database::update_setting( 'default_header', $header_id );
+        }
+        if ( $footer_id ) {
+            CodeSite_Database::update_setting( 'default_footer', $footer_id );
         }
     }
 }

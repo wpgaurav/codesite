@@ -7,7 +7,7 @@ Tags: page builder, code editor, html, css, javascript, templates
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,14 @@ Use the {{field}} syntax in your HTML. For example:
 - {{menu:primary}} - Your primary navigation menu
 
 == Changelog ==
+
+= 1.2.1 =
+* Added default Header layout with site name, tagline, and responsive mobile menu
+* Added default Footer layout with copyright and dynamic year
+* CSS now outputs with unique IDs per source (no merging in inline mode)
+* Fixed fullscreen mode - no longer covered by WordPress admin sidebar
+* Fixed editor becoming uneditable after exiting fullscreen mode
+* Default layouts are automatically set on new installations and upgrades
 
 = 1.2.0 =
 * Added code formatting buttons (HTML, CSS, JS) - beautify code without external libraries
