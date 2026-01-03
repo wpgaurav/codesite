@@ -1,19 +1,24 @@
 /**
  * CodeSite Admin Styles
+ * Light theme
  */
 
-/* Variables */
+/* Variables - Light Theme */
 :root {
     --codesite-primary: #2271b1;
     --codesite-primary-hover: #135e96;
-    --codesite-dark: #1e1e1e;
-    --codesite-darker: #121212;
-    --codesite-border: #3c3c3c;
-    --codesite-text: #e0e0e0;
-    --codesite-text-muted: #888;
-    --codesite-success: #00a32a;
-    --codesite-warning: #dba617;
-    --codesite-error: #d63638;
+    --codesite-bg: #f9fafb;
+    --codesite-bg-alt: #ffffff;
+    --codesite-border: #e5e7eb;
+    --codesite-border-dark: #d1d5db;
+    --codesite-text: #1f2937;
+    --codesite-text-muted: #6b7280;
+    --codesite-success: #059669;
+    --codesite-warning: #d97706;
+    --codesite-error: #dc2626;
+    --codesite-code-bg: #f8fafc;
+    --codesite-header-bg: #ffffff;
+    --codesite-sidebar-bg: #f3f4f6;
 }
 
 /* Wrap */
@@ -168,7 +173,7 @@
     color: #8a1f1f;
 }
 
-/* Editor Wrap */
+/* Editor Wrap - Light Theme */
 .codesite-editor-wrap {
     margin: 0;
     position: fixed;
@@ -178,7 +183,7 @@
     bottom: 0;
     display: flex;
     flex-direction: column;
-    background: var(--codesite-dark);
+    background: var(--codesite-bg);
 }
 
 .folded .codesite-editor-wrap {
@@ -192,14 +197,15 @@
     }
 }
 
-/* Editor Header */
+/* Editor Header - Light */
 .codesite-editor-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background: var(--codesite-darker);
+    background: var(--codesite-header-bg);
     border-bottom: 1px solid var(--codesite-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .codesite-editor-title {
@@ -215,23 +221,24 @@
 }
 
 .codesite-back:hover {
-    color: var(--codesite-text);
+    color: var(--codesite-primary);
 }
 
 .codesite-title-input {
-    background: transparent;
-    border: none;
+    background: var(--codesite-bg);
+    border: 1px solid var(--codesite-border);
     color: var(--codesite-text);
     font-size: 18px;
     font-weight: 600;
     padding: 5px 10px;
     width: 300px;
+    border-radius: 4px;
 }
 
 .codesite-title-input:focus {
     outline: none;
-    background: var(--codesite-dark);
-    border-radius: 3px;
+    border-color: var(--codesite-primary);
+    box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.1);
 }
 
 .codesite-title-input::placeholder {
@@ -245,11 +252,11 @@
 }
 
 .codesite-editor-actions select {
-    background: var(--codesite-dark);
+    background: var(--codesite-bg-alt);
     border: 1px solid var(--codesite-border);
     color: var(--codesite-text);
     padding: 6px 10px;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 /* Editor Body */
@@ -264,6 +271,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background: var(--codesite-bg);
 }
 
 /* Editor Panes */
@@ -279,6 +287,7 @@
     flex-direction: column;
     border-right: 1px solid var(--codesite-border);
     min-width: 0;
+    background: var(--codesite-bg-alt);
 }
 
 .codesite-pane:last-child {
@@ -290,12 +299,12 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
-    background: var(--codesite-darker);
+    background: var(--codesite-sidebar-bg);
     border-bottom: 1px solid var(--codesite-border);
 }
 
 .codesite-pane-header .pane-title {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--codesite-text-muted);
     text-transform: uppercase;
@@ -320,10 +329,24 @@
     flex: 1;
     position: relative;
     overflow: hidden;
+    background: var(--codesite-bg-alt);
 }
 
 .codesite-pane-content textarea {
-    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 12px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    resize: none;
+    background: var(--codesite-bg-alt);
+    color: var(--codesite-text);
+}
+
+.codesite-pane-content textarea:focus {
+    outline: none;
 }
 
 .codesite-pane-content .CodeMirror {
@@ -333,15 +356,17 @@
     right: 0;
     bottom: 0;
     height: 100% !important;
+    font-size: 13px;
 }
 
-/* Preview Area (top section) */
+/* Preview Area (top section) - Light */
 .codesite-preview-area {
     flex: 1;
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid var(--codesite-border);
     min-height: 200px;
+    background: var(--codesite-bg-alt);
 }
 
 .codesite-preview-area .codesite-pane-header {
@@ -362,12 +387,13 @@
     display: block;
 }
 
-/* Code Editors (bottom section) */
+/* Code Editors (bottom section) - Light */
 .codesite-code-editors {
     display: flex;
     height: 300px;
     flex-shrink: 0;
     border-top: 1px solid var(--codesite-border);
+    background: var(--codesite-bg-alt);
 }
 
 .codesite-code-editors .codesite-pane {
@@ -375,11 +401,7 @@
     min-width: 0;
 }
 
-/* Preview Pane (for block editor) */
-.codesite-preview-pane {
-    min-width: 300px;
-}
-
+/* Preview Controls */
 .codesite-preview-controls {
     display: flex;
     gap: 5px;
@@ -396,8 +418,8 @@
 
 .codesite-preview-size:hover,
 .codesite-preview-size.active {
-    background: var(--codesite-dark);
-    color: var(--codesite-text);
+    background: var(--codesite-bg);
+    color: var(--codesite-primary);
 }
 
 .codesite-preview-size .dashicons {
@@ -416,10 +438,10 @@
     display: block;
 }
 
-/* Editor Sidebar */
+/* Editor Sidebar - Light */
 .codesite-editor-sidebar {
     width: 280px;
-    background: var(--codesite-darker);
+    background: var(--codesite-sidebar-bg);
     border-left: 1px solid var(--codesite-border);
     overflow-y: auto;
     flex-shrink: 0;
@@ -454,11 +476,11 @@
 .codesite-sidebar-section input[type="text"],
 .codesite-sidebar-section input[type="number"],
 .codesite-sidebar-section select {
-    background: var(--codesite-dark);
+    background: var(--codesite-bg-alt);
     border: 1px solid var(--codesite-border);
     color: var(--codesite-text);
     padding: 8px 10px;
-    border-radius: 3px;
+    border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -467,6 +489,7 @@
 .codesite-sidebar-section select:focus {
     border-color: var(--codesite-primary);
     outline: none;
+    box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.1);
 }
 
 .codesite-sidebar-section p {
@@ -506,14 +529,15 @@
     flex-shrink: 0;
 }
 
-/* Sortable List */
+/* Sortable List - Light */
 .codesite-sortable-list {
     list-style: none;
     margin: 0;
     padding: 0;
     min-height: 50px;
-    background: var(--codesite-dark);
-    border-radius: 3px;
+    background: var(--codesite-bg-alt);
+    border: 1px solid var(--codesite-border);
+    border-radius: 4px;
 }
 
 .codesite-sortable-list li {
@@ -521,13 +545,15 @@
     align-items: center;
     gap: 10px;
     padding: 10px;
-    background: var(--codesite-darker);
-    border: 1px solid var(--codesite-border);
-    margin-bottom: 5px;
-    border-radius: 3px;
+    background: var(--codesite-bg-alt);
+    border-bottom: 1px solid var(--codesite-border);
     color: var(--codesite-text);
     font-size: 13px;
     cursor: move;
+}
+
+.codesite-sortable-list li:last-child {
+    border-bottom: none;
 }
 
 .codesite-sortable-list li .dashicons {
@@ -576,16 +602,16 @@
     font-style: italic;
 }
 
-/* Buttons in dark mode */
+/* Buttons in editor - Light */
 .codesite-editor-wrap .button {
-    background: var(--codesite-dark);
+    background: var(--codesite-bg-alt);
     border: 1px solid var(--codesite-border);
     color: var(--codesite-text);
 }
 
 .codesite-editor-wrap .button:hover {
-    background: var(--codesite-border);
-    border-color: var(--codesite-text-muted);
+    background: var(--codesite-bg);
+    border-color: var(--codesite-border-dark);
     color: var(--codesite-text);
 }
 
@@ -598,6 +624,49 @@
 .codesite-editor-wrap .button-primary:hover {
     background: var(--codesite-primary-hover);
     border-color: var(--codesite-primary-hover);
+}
+
+/* Tangible Integration Notice */
+.codesite-tangible-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.codesite-tangible-card h3 {
+    margin: 0 0 10px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.codesite-tangible-card p {
+    margin: 0 0 15px;
+    opacity: 0.9;
+}
+
+.codesite-tangible-card .button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.codesite-tangible-card .button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+}
+
+.codesite-tangible-card .button-primary {
+    background: #fff;
+    border-color: #fff;
+    color: #667eea;
+}
+
+.codesite-tangible-card .button-primary:hover {
+    background: #f0f0f0;
+    border-color: #f0f0f0;
 }
 
 /* Responsive */
