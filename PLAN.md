@@ -15,7 +15,7 @@ The WordPress block editor is improving, but it's still fighting against its own
 
 CodeSite gives developers a CodePen-like interface inside WordPress. Write HTML, CSS, and JS in split panes. See live preview. Build reusable layouts. Create templates for different content types. Output clean, minimal code.
 
-Think of it as: WordPress as a headless CMS, but with a visual builder for the frontend. You control every line of code.
+Think of it as: WordPress as a headless CMS, but with a visual builder for the frontend. You control every line of code. It has support for custom CSS frameworks, custom JS libraries. It also has a theme bypass option. Also, the code editing enables autocompletion for html and CSS classes and live preview. 
 
 ---
 
@@ -63,6 +63,7 @@ Any post, page, or CPT can override its template. This allows:
 - Custom header/footer for specific pages
 - Completely custom HTML for landing pages
 - Selective block replacement
+- CSS framework support with autocompletion.
 
 ---
 
@@ -308,7 +309,7 @@ $preview_data = [
 
 **The problem:** Active theme loads its own CSS/JS which conflicts with custom code.
 
-**Solution:** Complete theme bypass option.
+**Solution:** Complete theme bypass option. And allow loading a custom CSS framework.
 
 **Implementation:**
 ```php
@@ -1156,122 +1157,6 @@ All endpoints prefixed with `/wp-json/codesite/v1/`
 
 ---
 
-## Development Phases
-
-### Phase 1: Foundation (Weeks 1-3)
-
-**Goals:**
-- Plugin structure and activation
-- Database tables creation
-- Basic admin menu and pages
-- Block CRUD operations
-- Code editor integration (CodeMirror 6)
-
-**Deliverables:**
-- Working plugin that activates without errors
-- Blocks can be created, edited, saved, deleted
-- Basic syntax highlighting in editors
-- No frontend rendering yet
-
-### Phase 2: Editor & Preview (Weeks 4-6)
-
-**Goals:**
-- Full CodePen-style editor UI
-- Live preview functionality
-- Resizable panes
-- Theme selection (dark/light)
-- Emmet support
-
-**Deliverables:**
-- Complete editor interface
-- Real-time preview in iframe
-- Editor settings saved per user
-
-### Phase 3: Layouts System (Weeks 7-8)
-
-**Goals:**
-- Layout CRUD
-- Block ordering in layouts
-- Layout types (header/footer/section)
-- Layout editor UI
-
-**Deliverables:**
-- Layouts can be created and managed
-- Blocks can be arranged in layouts
-- Layouts render correctly
-
-### Phase 4: Templates & Rendering (Weeks 9-11)
-
-**Goals:**
-- Template CRUD
-- Template conditions system
-- Frontend rendering engine
-- Theme override system
-- CSS/JS compilation
-
-**Deliverables:**
-- Templates can be created for all content types
-- Conditional templates work
-- Frontend renders CodeSite templates
-- Theme can be completely bypassed
-
-### Phase 5: Dynamic Content (Weeks 12-13)
-
-**Goals:**
-- Dynamic field parser
-- All standard fields implemented
-- Filter/modifier system
-- ACF integration
-- Tangible integration
-
-**Deliverables:**
-- `{{field}}` syntax works everywhere
-- Filters like `|truncate:100` work
-- ACF fields accessible
-- Tangible loops render correctly
-
-### Phase 6: Post Overrides & Layers (Weeks 14-15)
-
-**Goals:**
-- Per-post override system
-- Metabox in post editor
-- Layers panel UI
-- Drag-drop reordering
-
-**Deliverables:**
-- Individual posts can override templates
-- Layers panel shows full page structure
-- Drag-drop works for reordering
-
-### Phase 7: Polish & Performance (Weeks 16-17)
-
-**Goals:**
-- UI polish and edge cases
-- Performance optimization
-- Caching layer
-- Error handling
-- Accessibility audit
-
-**Deliverables:**
-- Production-ready plugin
-- Fast admin interface
-- Accessible UI
-- Comprehensive error messages
-
-### Phase 8: Documentation & Launch (Week 18)
-
-**Goals:**
-- User documentation
-- Developer documentation
-- Video tutorials
-- WordPress.org submission prep
-
-**Deliverables:**
-- Complete documentation
-- Plugin ready for release
-
----
-
 ## Technical Considerations
 
 ### Performance
@@ -1395,73 +1280,13 @@ All endpoints prefixed with `/wp-json/codesite/v1/`
 | Clean output         | ✓✓✓       | ✓✓       | ✓✓      | ✓          |
 | Live preview         | ✓         | ✓        | ✓       | ✓          |
 | Learning curve       | Medium    | High     | Medium  | Low        |
-| Price                | Free/Pro  | $149     | $79     | $149       |
+| Price                | Free      | $149     | $79     | $149       |
 | Theme override       | ✓         | ✓        | ✓       | ✓          |
 | Dynamic content      | ✓         | ✓        | ✓       | ✓          |
 | Tangible integration | ✓         | No       | No      | No         |
 
 **Differentiation:**
 CodeSite is for developers who think in HTML/CSS/JS and want full control. It's not a visual builder with code output. It's a code editor with visual preview.
-
----
-
-## Success Metrics
-
-### Adoption
-- 1,000 active installs within 6 months
-- 5,000 active installs within 12 months
-
-### Quality
-- 4.5+ star rating on WordPress.org
-- <1% support tickets per active install
-
-### Performance
-- Admin page load <2 seconds
-- Preview update <500ms
-- Frontend render <100ms overhead
-
----
-
-## Open Questions
-
-1. **Licensing model?**
-   - Free core with Pro add-ons?
-   - Freemium (limited blocks in free)?
-   - Fully free, funded by services?
-
-2. **Should blocks support versioning?**
-   - Adds complexity
-   - Useful for rollbacks
-   - Consider for v1.1
-
-3. **WooCommerce integration depth?**
-   - Basic template overrides?
-   - Full shop builder?
-   - Separate add-on?
-
-4. **Collaboration features?**
-   - Multiple users editing?
-   - Real-time sync?
-   - Probably v2.0 territory
-
----
-
-## Action Items
-
-### Immediate (This Week)
-1. [ ] Set up plugin boilerplate
-2. [ ] Create database schema
-3. [ ] Build basic admin page structure
-4. [ ] Integrate CodeMirror 6
-
-### Next Week
-1. [ ] Block CRUD operations
-2. [ ] Basic REST API endpoints
-3. [ ] Editor pane layout
-4. [ ] First preview attempt
-
-### Following Weeks
-- Refer to Phase 1-8 breakdown above
 
 ---
 
