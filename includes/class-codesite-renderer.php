@@ -130,12 +130,8 @@ class CodeSite_Renderer {
             );
         }
 
-        return sprintf(
-            '<div class="codesite-layout codesite-layout-%s codesite-layout-%d">%s</div>',
-            esc_attr( $layout->type ),
-            $layout->id,
-            $html
-        );
+        // Return raw HTML without wrapper div.
+        return $html;
     }
 
     /**
@@ -515,21 +511,15 @@ class CodeSite_Renderer {
         }
 
         echo "<script id='codesite-js'>\n";
-        echo "(function() {\n";
 
         if ( ! empty( $global_js ) ) {
-            echo "// Global JS\n";
             echo $global_js . "\n";
         }
 
         foreach ( self::$js_collection as $js ) {
-            echo "\n// " . ucfirst( $js['type'] ) . ": " . esc_js( $js['name'] ) . "\n";
-            echo "(function() {\n";
             echo $js['content'] . "\n";
-            echo "})();\n";
         }
 
-        echo "\n})();\n";
         echo "</script>";
     }
 
