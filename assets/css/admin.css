@@ -894,3 +894,103 @@ body.codesite-fullscreen-active .codesite-editor-wrap {
     height: 16px;
     vertical-align: middle;
 }
+
+/* Multi-Pane Support */
+.codesite-pane-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.codesite-pane-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    background: #e9ecef;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.codesite-pane-group-header .group-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1d2327;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.codesite-add-pane {
+    padding: 2px 8px;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    background: #fff;
+    color: #2271b1;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.codesite-add-pane:hover {
+    background: #f0f0f1;
+    border-color: #2271b1;
+}
+
+.codesite-add-pane .dashicons {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+.codesite-remove-pane {
+    color: #cc1818 !important;
+    border-color: #cc1818 !important;
+}
+
+.codesite-remove-pane:hover {
+    background: #fcebea !important;
+    color: #8a1f1f !important;
+}
+
+/* Multiple panes in a group */
+.codesite-pane-group .codesite-pane {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.codesite-pane-group .codesite-pane:last-child {
+    border-bottom: none;
+}
+
+/* Code editors with multi-pane */
+.codesite-code-editors {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 250px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.codesite-code-editors .codesite-pane {
+    min-height: 180px;
+    max-height: 350px;
+}
+
+/* Add pane row */
+.codesite-add-pane-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #f6f7f7;
+    border-top: 1px solid #dcdcde;
+    justify-content: center;
+}
+
+/* Pane number indicator */
+.codesite-pane-header .pane-number {
+    font-size: 10px;
+    color: #8c8f94;
+    margin-left: 5px;
+}

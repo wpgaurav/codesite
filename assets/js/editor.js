@@ -2,12 +2,19 @@
  * CodeSite Editor JavaScript
  *
  * Uses WordPress built-in code editor (CodeMirror).
+ * Supports multiple panes per code type (HTML, CSS, JS).
  */
 
 (function($) {
     'use strict';
 
-    var editors = {};
+    // Multi-pane editor storage: { html: [editor1, editor2, ...], css: [...], js: [...] }
+    var editors = {
+        html: [],
+        css: [],
+        js: []
+    };
+    var paneCounters = { html: 0, css: 0, js: 0 };
     var previewDebounce = null;
 
     // CSS Snippets Library - declarations only (no class wrappers)
@@ -105,6 +112,7 @@
         initCodeTools();
         initFullscreen();
         initCollapsibleSidebar();
+        initMultiPane();
     });
 
     /**
@@ -113,43 +121,19 @@
     function initEditors() {
         var settings = codesiteAdmin.editorSettings;
 
-        // HTML Editor
-        var htmlTextarea = document.getElementById('codesite-html');
-        if (htmlTextarea && settings.html) {
-            editors.html = wp.codeEditor.initialize(htmlTextarea, settings.html);
-            if (editors.html && editors.html.codemirror) {
-                editors.html.codemirror.on('change', debouncePreview);
-            }
-        }
-
-        // CSS Editor
-        var cssTextarea = document.getElementById('codesite-css');
-        if (cssTextarea && settings.css) {
-            editors.css = wp.codeEditor.initialize(cssTextarea, settings.css);
-            if (editors.css && editors.css.codemirror) {
-                editors.css.codemirror.on('change', debouncePreview);
-            }
-        }
-
-        // JS Editor
-        var jsTextarea = document.getElementById('codesite-js');
-        if (jsTextarea && settings.js) {
-            editors.js = wp.codeEditor.initialize(jsTextarea, settings.js);
-            if (editors.js && editors.js.codemirror) {
-                editors.js.codemirror.on('change', debouncePreview);
-            }
-        }
-
-        // Fallback: If editors didn't initialize, make textareas work
-        if (!editors.html && htmlTextarea) {
-            $(htmlTextarea).on('input', debouncePreview);
-        }
-        if (!editors.css && cssTextarea) {
-            $(cssTextarea).on('input', debouncePreview);
-        }
-        if (!editors.js && jsTextarea) {
-            $(jsTextarea).on('input', debouncePreview);
-        }
+        // Initialize all panes for each type
+        ['html', 'css', 'js'].forEach(function(type) {
+            var $panes = $('.codesite-pane[data-pane="' + type + '"]');
+            $panes.each(function(index) {
+                var $pane = $(this);
+                var $textarea = $pane.find('textarea');
+                if ($textarea.length) {
+                    var paneId = $textarea.attr('id') || type + '-' + index;
+                    paneCounters[type] = Math.max(paneCounters[type], index + 1);
+                    initSingleEditor($textarea[0], type, settings[type], paneId);
+                }
+            });
+        });
 
         // Refresh editors after layout settles
         setTimeout(refreshEditors, 200);
@@ -157,12 +141,36 @@
     }
 
     /**
+     * Initialize a single editor instance
+     */
+    function initSingleEditor(textarea, type, settings, paneId) {
+        if (!textarea || !settings) return null;
+
+        var editorInstance = wp.codeEditor.initialize(textarea, settings);
+        if (editorInstance && editorInstance.codemirror) {
+            editorInstance.codemirror.on('change', debouncePreview);
+            editorInstance.paneId = paneId;
+            editors[type].push(editorInstance);
+            return editorInstance;
+        } else {
+            // Fallback for plain textarea
+            $(textarea).on('input', debouncePreview);
+            editors[type].push({ textarea: textarea, paneId: paneId });
+        }
+        return null;
+    }
+
+    /**
      * Refresh all CodeMirror editors
      */
     function refreshEditors() {
-        Object.keys(editors).forEach(function(key) {
-            if (editors[key] && editors[key].codemirror) {
-                editors[key].codemirror.refresh();
+        ['html', 'css', 'js'].forEach(function(type) {
+            if (editors[type] && editors[type].length) {
+                editors[type].forEach(function(editor) {
+                    if (editor && editor.codemirror) {
+                        editor.codemirror.refresh();
+                    }
+                });
             }
         });
     }
@@ -183,25 +191,73 @@
     }
 
     /**
-     * Get editor value
+     * Get combined value from all editors of a type
      */
     function getEditorValue(type) {
-        if (editors[type] && editors[type].codemirror) {
-            return editors[type].codemirror.getValue();
+        var values = [];
+        if (editors[type] && editors[type].length) {
+            editors[type].forEach(function(editor) {
+                var val = '';
+                if (editor.codemirror) {
+                    val = editor.codemirror.getValue();
+                } else if (editor.textarea) {
+                    val = $(editor.textarea).val();
+                }
+                if (val.trim()) {
+                    values.push(val);
+                }
+            });
         }
-        var $textarea = $('#codesite-' + type);
-        return $textarea.length ? $textarea.val() : '';
+        // Fallback for single textarea without pane structure
+        if (values.length === 0) {
+            var $textarea = $('#codesite-' + type);
+            if ($textarea.length) {
+                return $textarea.val();
+            }
+        }
+        return values.join('\n\n');
     }
 
     /**
-     * Set editor value
+     * Set value for the first editor of a type
      */
     function setEditorValue(type, value) {
-        if (editors[type] && editors[type].codemirror) {
-            editors[type].codemirror.setValue(value);
+        if (editors[type] && editors[type].length && editors[type][0]) {
+            if (editors[type][0].codemirror) {
+                editors[type][0].codemirror.setValue(value);
+            } else if (editors[type][0].textarea) {
+                $(editors[type][0].textarea).val(value);
+            }
         } else {
             $('#codesite-' + type).val(value);
         }
+    }
+
+    /**
+     * Get the first editor of a type (for inserting snippets, etc.)
+     */
+    function getFirstEditor(type) {
+        if (editors[type] && editors[type].length && editors[type][0]) {
+            return editors[type][0];
+        }
+        return null;
+    }
+
+    /**
+     * Get the active/focused editor of a type, or first if none focused
+     */
+    function getActiveEditor(type) {
+        if (editors[type] && editors[type].length) {
+            for (var i = 0; i < editors[type].length; i++) {
+                var editor = editors[type][i];
+                if (editor.codemirror && editor.codemirror.hasFocus()) {
+                    return editor;
+                }
+            }
+            // Return first if none focused
+            return editors[type][0];
+        }
+        return null;
     }
 
     /**
@@ -286,8 +342,9 @@
             var field = $('#codesite-dynamic-field').val();
             if (!field) return;
 
-            if (editors.html && editors.html.codemirror) {
-                var cm = editors.html.codemirror;
+            var activeEditor = getActiveEditor('html');
+            if (activeEditor && activeEditor.codemirror) {
+                var cm = activeEditor.codemirror;
                 var doc = cm.getDoc();
                 var cursor = doc.getCursor();
                 doc.replaceRange(field, cursor);
@@ -443,9 +500,10 @@
             var snippet = cssSnippets[snippetKey];
             if (!snippet) return;
 
-            // Insert into CSS editor
-            if (editors.css && editors.css.codemirror) {
-                var cm = editors.css.codemirror;
+            // Insert into active CSS editor
+            var activeEditor = getActiveEditor('css');
+            if (activeEditor && activeEditor.codemirror) {
+                var cm = activeEditor.codemirror;
                 var doc = cm.getDoc();
                 var cursor = doc.getCursor();
                 var currentValue = cm.getValue();
@@ -522,9 +580,10 @@
 
             var selector = '.' + className + ' {\n  \n}';
 
-            // Insert into CSS editor
-            if (editors.css && editors.css.codemirror) {
-                var cm = editors.css.codemirror;
+            // Insert into active CSS editor
+            var activeEditor = getActiveEditor('css');
+            if (activeEditor && activeEditor.codemirror) {
+                var cm = activeEditor.codemirror;
                 var doc = cm.getDoc();
                 var cursor = doc.getCursor();
                 var currentValue = cm.getValue();
@@ -559,18 +618,11 @@
         // Initial update
         setTimeout(updateClassSuggestions, 600);
 
-        // Update when HTML editor changes
-        if (editors.html && editors.html.codemirror) {
-            editors.html.codemirror.on('change', function() {
-                clearTimeout(window.classUpdateTimeout);
-                window.classUpdateTimeout = setTimeout(updateClassSuggestions, 500);
-            });
-        } else {
-            $('#codesite-html').on('input', function() {
-                clearTimeout(window.classUpdateTimeout);
-                window.classUpdateTimeout = setTimeout(updateClassSuggestions, 500);
-            });
-        }
+        // Update when any HTML editor changes
+        $(document).on('input', '.codesite-pane[data-pane="html"] textarea', function() {
+            clearTimeout(window.classUpdateTimeout);
+            window.classUpdateTimeout = setTimeout(updateClassSuggestions, 500);
+        });
     }
 
     /**
@@ -891,6 +943,103 @@
 
             setTimeout(refreshEditors, 100);
         });
+    }
+
+    /**
+     * Initialize multi-pane functionality (add/remove panes)
+     */
+    function initMultiPane() {
+        // Add pane button click
+        $(document).on('click', '.codesite-add-pane', function() {
+            var type = $(this).data('type');
+            if (!type) return;
+
+            addPane(type);
+        });
+
+        // Remove pane button click
+        $(document).on('click', '.codesite-remove-pane', function() {
+            var $pane = $(this).closest('.codesite-pane');
+            var type = $pane.data('pane');
+
+            removePane($pane, type);
+        });
+    }
+
+    /**
+     * Add a new pane of specified type
+     */
+    function addPane(type) {
+        var settings = codesiteAdmin.editorSettings;
+        paneCounters[type]++;
+        var newIndex = paneCounters[type];
+        var paneId = 'codesite-' + type + '-' + newIndex;
+
+        // Create new pane HTML
+        var typeLabel = type.toUpperCase();
+        var paneHtml = '<div class="codesite-pane" data-pane="' + type + '">' +
+            '<div class="codesite-pane-header">' +
+            '<span class="pane-title">' + typeLabel + ' ' + (newIndex + 1) + '</span>' +
+            '<div class="codesite-pane-tools">' +
+            '<button type="button" class="codesite-pane-tool codesite-format-' + type + '" title="Format">' +
+            '<span class="dashicons dashicons-editor-alignleft"></span>' +
+            '</button>' +
+            '<button type="button" class="codesite-pane-tool codesite-fullscreen-toggle" title="Fullscreen">' +
+            '<span class="dashicons dashicons-editor-expand"></span>' +
+            '</button>' +
+            '<button type="button" class="codesite-pane-tool codesite-remove-pane" title="Remove Pane">' +
+            '<span class="dashicons dashicons-no-alt"></span>' +
+            '</button>' +
+            '</div>' +
+            '<button type="button" class="codesite-pane-toggle" title="Toggle pane">−</button>' +
+            '</div>' +
+            '<div class="codesite-pane-content">' +
+            '<textarea id="' + paneId + '"></textarea>' +
+            '</div>' +
+            '</div>';
+
+        // Find the last pane of this type and insert after it
+        var $lastPane = $('.codesite-pane[data-pane="' + type + '"]').last();
+        if ($lastPane.length) {
+            $lastPane.after(paneHtml);
+        } else {
+            // Fallback: add to code editors container
+            $('.codesite-code-editors').append(paneHtml);
+        }
+
+        // Initialize the new editor
+        var $newPane = $('#' + paneId);
+        if ($newPane.length && settings[type]) {
+            initSingleEditor($newPane[0], type, settings[type], paneId);
+        }
+
+        // Refresh all editors
+        setTimeout(refreshEditors, 100);
+    }
+
+    /**
+     * Remove a pane
+     */
+    function removePane($pane, type) {
+        // Don't remove if it's the only pane of this type
+        var $typePanes = $('.codesite-pane[data-pane="' + type + '"]');
+        if ($typePanes.length <= 1) {
+            return;
+        }
+
+        // Find and remove the editor from our array
+        var $textarea = $pane.find('textarea');
+        var textareaId = $textarea.attr('id');
+
+        editors[type] = editors[type].filter(function(editor) {
+            return editor.paneId !== textareaId;
+        });
+
+        // Remove the pane from DOM
+        $pane.remove();
+
+        // Update preview
+        debouncePreview();
     }
 
     // Expose editors for external access

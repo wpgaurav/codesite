@@ -7,7 +7,7 @@ Tags: page builder, code editor, html, css, javascript, templates
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,13 @@ Use the {{field}} syntax in your HTML. For example:
 - {{menu:primary}} - Your primary navigation menu
 
 == Changelog ==
+
+= 1.2.2 =
+* Added multi-pane support - add multiple HTML, CSS, or JS code blocks that concatenate on save
+* Dynamically add and remove panes per code type
+* All panes of the same type combine in preview and output
+* CSS snippets and class suggestions insert into active/focused editor
+* Improved editor layout for multiple panes
 
 = 1.2.1 =
 * Added default Header layout with site name, tagline, and responsive mobile menu
